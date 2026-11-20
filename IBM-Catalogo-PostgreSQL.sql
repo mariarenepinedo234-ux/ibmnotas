@@ -1,4 +1,4 @@
--- IBM Notas | 7 carreras y 163 materias.
+-- IBM Notas | 6 carreras y 141 materias.
 -- Ejecutar el archivo completo en pgAdmin Query Tool sobre la base de IBM Notas.
 -- Requiere las tablas del portal (npm run db:migrate). No carga usuarios ni notas.
 
@@ -22,7 +22,6 @@ DECLARE
     "ADMINISTRACIÓN DE EMPRESAS",
     "COMERCIO INTERNACIONAL Y ADMINISTRACIÓN ADUANERA",
     "CONTADURÍA GENERAL",
-    "DISEÑO GRÁFICO",
     "MERCADOTECNIA",
     "SECRETARIADO EJECUTIVO",
     "SISTEMAS INFORMÁTICOS"
@@ -797,22 +796,10 @@ DECLARE
       "code": "HSA-101"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 1,
-      "name": "FUNDAMENTOS DE DISEÑO",
-      "code": "FDI-101"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "INGLÉS TÉCNICO",
       "code": "INT-102"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 1,
-      "name": "COMUNICACIÓN VISUAL",
-      "code": "COV-102"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -821,22 +808,10 @@ DECLARE
       "code": "MPI-103"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 1,
-      "name": "DISEÑO VECTORIAL",
-      "code": "DVE-103"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "PROGRAMACIÓN I",
       "code": "PRG-104"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 1,
-      "name": "CREACIÓN DE IMÁGENES VECTORIALES",
-      "code": "CDI-104"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -845,34 +820,16 @@ DECLARE
       "code": "TSO-105"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 1,
-      "name": "TIPOGRAFÍA",
-      "code": "TIP-105"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "OFIMÁTICA Y TECNOLOGÍA MULTIMEDIA",
       "code": "OTM-106"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 1,
-      "name": "TALLER DE CREATIVIDAD",
-      "code": "TAC-106"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "DISEÑO Y PROGRAMACIÓN WEB I",
       "code": "DPW-107"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 1,
-      "name": "INGLES TÉCNICO",
-      "code": "INT-107"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -884,34 +841,16 @@ DECLARE
       ]
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 2,
-      "name": "MAQUETACIÓN ELECTRÓNICA",
-      "code": "MEL-201"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "PROGRAMACIÓN II",
       "code": "PRG-202"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 2,
-      "name": "INTERFAZ GRÁFICA",
-      "code": "IGR-202"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "REDES DE COMPUTADORAS I",
       "code": "RDC-203"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 2,
-      "name": "AUDIOVISUAL",
-      "code": "AUD-203"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -923,22 +862,10 @@ DECLARE
       ]
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 2,
-      "name": "EMPRENDIMIENTO PRODUCTIVO",
-      "code": "EMP-204"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "ANÁLISIS Y DISEÑO DE SISTEMAS I",
       "code": "ADS-205"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 2,
-      "name": "MARKETING",
-      "code": "MRK-205"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -947,22 +874,10 @@ DECLARE
       "code": "DPW-206"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 2,
-      "name": "DISEÑO Y MODELADO 3D",
-      "code": "DMO-206"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "BASE DE DATOS I",
       "code": "BDD-207"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 2,
-      "name": "DISEÑO E IMAGEN DE MARCA",
-      "code": "DIM-207"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -977,34 +892,16 @@ DECLARE
       "code": "GMC-301"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "DISEÑO PARA EL DESARROLLO",
-      "code": "DGD-301"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "REDES DE COMPUTADORAS II",
       "code": "RDC-302"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "SISTEMAS DE IMPRESIÓN",
-      "code": "SIM-302"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "DISEÑO Y PROGRAMACIÓN WEB III",
       "code": "DPW-303"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "PROYECTOS DE DISEÑO",
-      "code": "PDG-303"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1016,22 +913,10 @@ DECLARE
       ]
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "DIAGNÓSTICO DE DISEÑO",
-      "code": "DDI-304"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "ANÁLISIS Y DISEÑO DE SISTEMAS II",
       "code": "ADS-305"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "PENSAMIENTO CREATIVO Y PROTOTIPADO",
-      "code": "PCP-305"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1040,34 +925,16 @@ DECLARE
       "code": "BDD-306"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "PRODUCCIÓN DE PROTOTIPOS",
-      "code": "PPR-306"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "PROYECTOS DE INNOVACIÓN Y COMPUTACIÓN EN LA NUBE",
       "code": "PIC-307"
     },
     {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "APLICACIONES DE DISEÑO",
-      "code": "APD-307"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "TALLER DE MODALIDAD DE GRADUACIÓN",
       "code": "TMG-308"
-    },
-    {
-      "career": "DISEÑO GRÁFICO",
-      "level": 3,
-      "name": "TALLER DE MODALIDAD DE GRADUACIÓN",
-      "code": "TDG-308"
     }
   ]
 }
@@ -1134,9 +1001,23 @@ BEGIN
     END LOOP;
   END LOOP;
 
-  RAISE NOTICE 'Catálogo de IBM cargado: 7 carreras y 163 materias oficiales.';
+  RAISE NOTICE 'Catálogo de IBM cargado: 6 carreras y 141 materias oficiales.';
 END;
 $import$;
 
 DROP FUNCTION pg_temp.ibm_name_key(text);
+-- Retirar Diseño Gráfico cuando carece de vínculos académicos.
+DELETE FROM subjects AS subject
+USING careers AS career
+WHERE subject.career_id = career.id
+  AND upper(trim(career.name)) IN ('DISEÑO GRÁFICO', 'DISEÑO GRAFICO', 'DISENO GRAFICO')
+  AND NOT EXISTS (SELECT 1 FROM offerings WHERE subject_id = subject.id)
+  AND NOT EXISTS (SELECT 1 FROM academic_groups WHERE subject_id = subject.id)
+  AND NOT EXISTS (SELECT 1 FROM subject_series WHERE subject_id = subject.id);
+
+DELETE FROM careers AS career
+WHERE upper(trim(career.name)) IN ('DISEÑO GRÁFICO', 'DISEÑO GRAFICO', 'DISENO GRAFICO')
+  AND NOT EXISTS (SELECT 1 FROM subjects WHERE career_id = career.id)
+  AND NOT EXISTS (SELECT 1 FROM students WHERE career_id = career.id)
+  AND NOT EXISTS (SELECT 1 FROM study_plans WHERE career_id = career.id);
 COMMIT;
