@@ -75,7 +75,7 @@ export async function openReport(id,ctx) {
           const response=await fetch(`/api/reports/${id}?format=${format}${ready?'':'&draft=true'}`);
           if(!response.ok) {const body=await response.json();throw new Error(body.error||'No se pudo generar el archivo.');}
           const blob=await response.blob(),url=URL.createObjectURL(blob),link=document.createElement('a');
-          link.href=url;link.download=response.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1]||`planilla-ceicom.${format}`;
+          link.href=url;link.download=response.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1]||`planilla-ibm.${format}`;
           document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
           ctx.toast(`${format==='pdf'?'PDF':'Excel'} generado correctamente.`);
         } catch(error){$('.report-error').textContent=error.message;}

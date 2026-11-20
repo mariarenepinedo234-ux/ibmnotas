@@ -4,7 +4,7 @@ import {applyCatalog,keyOf} from './catalog.js';
 export async function reviewedSubjectCatalog(){
   const catalog=JSON.parse(await readFile(new URL('./catalogs/ceicom-2026.json',import.meta.url),'utf8'));
   const seen=new Set();
-  if(catalog.subjects.length!==235||catalog.careers.length!==9)throw new Error('El catálogo revisado está incompleto.');
+  if(catalog.subjects.length!==163||catalog.careers.length!==7)throw new Error('El catálogo revisado está incompleto.');
   for(const subject of catalog.subjects){
     const identity=`${keyOf(subject.career)}|${subject.level}|${subject.code}`;
     if(seen.has(identity)||!catalog.careers.includes(subject.career)||![1,2,3].includes(subject.level)||typeof subject.name!=='string'||!subject.name.trim()||subject.name.length>160||!/^[A-Z0-9][A-Z0-9._/-]{0,39}$/.test(subject.code))throw new Error('El catálogo revisado contiene una materia inválida.');

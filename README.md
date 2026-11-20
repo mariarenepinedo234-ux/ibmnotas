@@ -1,6 +1,6 @@
-# Ceicom · Gestión académica con PostgreSQL
+# IBM · Gestión académica con PostgreSQL
 
-Sistema web de registro académico del Instituto Tecnológico Ceicom. **Node.js 24 + PostgreSQL 17**, con PDFKit para planillas carta y ExcelJS para Excel editable. Esta versión reemplaza SQLite como base de ejecución.
+Sistema web de registro académico del Instituto Técnico Británico Mercantil (IBM). **Node.js 24 + PostgreSQL 17**, con PDFKit para planillas carta y ExcelJS para Excel editable. Esta versión reemplaza SQLite como base de ejecución.
 
 La guía de instalación, actualización desde SQLite, respaldos y problemas de Windows está en [GUIA-PARA-PROBAR.md](GUIA-PARA-PROBAR.md).
 
@@ -53,7 +53,7 @@ Los resúmenes administrativos y docentes distinguen **materias diferentes** de 
 
 Las pantallas de Materias y asignaciones y Docentes no muestran el botón Importar Excel. Para revisar un catálogo institucional desde la terminal usa `npm run catalogo:importar -- "archivo.xlsx"`; añade `--aplicar` para guardarlo. Se utiliza exclusivamente la hoja **BASE DE DATOS**: lista de carreras y docentes en columna B, y bloques de materias/códigos encabezados por carrera y año. Las otras hojas no se usan para cargar estudiantes, notas ni asignaciones. No se ejecutan fórmulas del archivo. Límite: 2 MB comprimido y 40 MB expandido.
 
-La importación actualiza coincidencias por código, carrera y año, permite códigos compartidos entre carreras, conserva las materias ausentes y se ejecuta en una transacción. Una repetición del mismo catálogo no duplica los registros. Los nombres de materias y estudiantes se guardan en mayúsculas, conservando tildes y Ñ; posibles errores de redacción se corrigen desde **Editar**. La referencia original contenía 163 materias y 23 docentes. La revisión de noviembre de 2026 contiene 235 materias de las nueve carreras y completa Electrónica y Audiovisuales; sus datos de materias están disponibles con `npm run catalogo:actualizar`.
+La importación actualiza coincidencias por código, carrera y año, permite códigos compartidos entre carreras, conserva las materias ausentes y se ejecuta en una transacción. Una repetición del mismo catálogo no duplica los registros. Los nombres de materias y estudiantes se guardan en mayúsculas, conservando tildes y Ñ; posibles errores de redacción se corrigen desde **Editar**. La referencia original contenía 163 materias y 23 docentes. El catálogo de IBM contiene 163 materias de siete carreras y se aplica con `npm run catalogo:actualizar`.
 
 En el catálogo puedes **buscar por código/nombre**, filtrar por **carrera y año académico**, **crear** materias y **editar** nombre, código o estado. Una materia inactiva no puede asignarse nuevamente pero conserva su historial. Si ya tiene asignaciones, no se permite cambiar su carrera o año: crea otro registro para otro plan. Un código debe ser único dentro de una misma carrera y año.
 
@@ -159,11 +159,9 @@ La auditoría npm actual señala avisos moderados en `minimatch`, transitivo de 
 
 ## Identidad visual
 
-El acceso usa una tarjeta centrada sobre fondo vino oscuro, con campos de usuario/CI y contraseña, control para mostrar la clave y orientación para recuperar el acceso mediante secretaría. La interfaz incorpora el logotipo de texto en el acceso y la barra lateral, y los tamaños originales de las fuentes en los paneles. Los filtros de gestión y módulo ajustan su altura para mostrar el texto completo. El logo se muestra sin recuadro: guindo en tema claro y blanco en tema oscuro, con el fondo transparente mediante una máscara de luminancia. El archivo `public/assets/ceicom-wordmark.png` es una reproducción de la referencia visual recibida; puede reemplazarse por el archivo original del instituto en blanco sobre fondo negro o transparente, conservando ese nombre para la máscara. El escudo original `public/assets/ceicom-logo.png` sigue reservado para las planillas, PDF y Excel. Estos cambios son visuales y no requieren migraciones de base de datos.
+La interfaz del Instituto Técnico Británico Mercantil combina azul y crema en el tema claro, y azul profundo con detalles dorados en el tema oscuro. El botón **Tema oscuro / Tema claro** aparece en el acceso y en la barra superior del panel. El navegador guarda la preferencia y la sincroniza entre pestañas del mismo sitio.
 
-Vista previa del nuevo acceso: [ver imagen](docs/login-preview.png).
-
-El botón **Tema oscuro / Tema claro** permite cambiar la apariencia en el login y en la barra superior de los paneles de todos los roles. La preferencia se guarda en el navegador y se sincroniza entre pestañas del mismo sitio. El tema claro es el predeterminado; las planillas y su impresión conservan el papel blanco y el escudo en ambos temas. Vista previa: [tema oscuro](docs/dark-theme-preview.png).
+El acceso, el menú lateral, el icono de la pestaña y las planillas en pantalla, PDF y Excel comparten la imagen `public/assets/logo_ibm.png`. Para actualizarla, reemplaza el PNG y reinicia el servidor para que vuelvan a cargarlo las exportaciones. Las planillas mantienen el fondo blanco al imprimir.
 
 ## Copias de seguridad desde administración
 
@@ -215,7 +213,7 @@ Para actualizar, detén el portal y copia la versión completa del proyecto, con
 
 ## Catálogo corregido de noviembre de 2026
 
-Materias y asignaciones ya no muestra **Importar Excel**. El catálogo revisado del archivo recibido el 11 de noviembre de 2026 está incorporado en `catalogs/ceicom-2026.json`: 235 materias de nueve carreras, con 21 nombres corregidos y 72 materias añadidas para completar Electrónica y Diseño y Producción de Audiovisuales - Guionización (36 por carrera). El archivo publicado contiene únicamente carreras, códigos, años y nombres de materias; no incluye el Excel ni los datos personales de sus otras hojas.
+Materias y asignaciones ya no muestra **Importar Excel**. El catálogo revisado del archivo recibido el 11 de noviembre de 2026 está incorporado en `catalogs/ceicom-2026.json`: 163 materias de las siete carreras de IBM, con 21 nombres corregidos. El archivo publicado contiene únicamente carreras, códigos, años y nombres de materias; no incluye el Excel ni los datos personales de sus otras hojas.
 
 Tras actualizar el proyecto completo, conservando `.env`, `backups` y los archivos privados, ejecuta:
 
@@ -225,7 +223,7 @@ npm run catalogo:actualizar
 npm run dev
 ```
 
-El comando aplica el catálogo a la base de tu `.env` en una transacción. Actualiza nombres por código, carrera y año, conservando IDs, estado activo/inactivo, asignaciones, inscritos y notas. Si una materia sin código coincide de forma inequívoca con un nombre anterior conocido, se corrige y se completa su código sobre el mismo ID. Añade las materias faltantes y conserva las complementarias, como Informática (Power BI), que no están en el archivo oficial. Una segunda ejecución no duplica materias; vuelve a aplicar los nombres oficiales revisados. El total del sistema puede superar las 235 materias del archivo si hay complementarias o registros históricos propios.
+El comando aplica el catálogo a la base de tu `.env` en una transacción. Actualiza nombres por código, carrera y año, conservando IDs, estado activo/inactivo, asignaciones, inscritos y notas. Si una materia sin código coincide de forma inequívoca con un nombre anterior conocido, se corrige y se completa su código sobre el mismo ID. Añade las materias faltantes y conserva las complementarias, como Informática (Power BI), que no están en el archivo oficial. Una segunda ejecución no duplica materias; vuelve a aplicar los nombres oficiales revisados. El total del sistema puede superar las 163 materias del archivo si hay complementarias o registros históricos propios.
 
 Para revisar solamente el contenido preparado, usa `npm run catalogo:actualizar -- --revisar`. Para correcciones posteriores hechas por la institución se mantienen **Crear materia**, **Editar** y la herramienta de importación por terminal. La importación completa de materias y docentes sigue disponible por terminal con el Excel actualizado; no hay botón de importación en Docentes. Presiona Ctrl + F5 después de aplicar el catálogo.
 
@@ -247,7 +245,7 @@ Vista con registros ficticios: [asignaciones por docente](docs/teacher-assignmen
 
 ## Crear una materia para varias carreras
 
-**Materias y asignaciones → Crear materia** permite elegir el año académico y marcar una o varias carreras, con **Seleccionar todas** y un contador. Por ejemplo, registra **ORATORIA**, elige **3º año**, marca todas y desmarca Diseño Gráfico, Electrónica y Audiovisuales. El código es opcional y puede ser el mismo en las carreras elegidas. La materia queda en sus catálogos como complementaria, después de las materias oficiales del Excel de ese año.
+**Materias y asignaciones → Crear materia** permite elegir el año académico y marcar una o varias carreras, con **Seleccionar todas** y un contador. Por ejemplo, registra **ORATORIA**, elige **3º año**, marca todas y desmarca Diseño Gráfico. El código es opcional y puede ser el mismo en las carreras elegidas. La materia queda en sus catálogos como complementaria, después de las materias oficiales del Excel de ese año.
 
 La creación no inscribe estudiantes ni crea asignaciones docentes. Para el ingreso 2024, usa después **Estudiantes → Registrar grupo**, selecciona carrera, 3º año, ingreso 2024, gestión cursada, trimestre, turno, docente y ORATORIA; marca los estudiantes registrados correspondientes. La edición del catálogo continúa siendo individual por carrera para conservar el historial.
 

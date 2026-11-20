@@ -6,8 +6,8 @@ import PDFDocument from 'pdfkit';
 import ExcelJS from 'exceljs';
 import { dimensions } from './lib.js';
 
-const logo=readFileSync(new URL('./public/assets/ceicom-logo.png',import.meta.url));
-const WINE='#72283f', INK='#302a30', LINE='#bdb3b8', BLUE='#e7f0f3', CREAM='#f5ecdd';
+const logo=readFileSync(new URL('./public/assets/logo_ibm.png',import.meta.url));
+const NAVY='#173968', INK='#1b2b43', LINE='#bdc8d6', BLUE='#e7f0f3', CREAM='#f5ecdd';
 const widths=[27,244,47,47,47,48,68];
 const levelName={1:'PRIMERO',2:'SEGUNDO',3:'TERCERO'};
 export const statusFor=grade=>grade===null?'PENDIENTE':grade>=61?'APROBADO':'REPROBADO';
@@ -37,7 +37,7 @@ const dateLabel=iso=>new Intl.DateTimeFormat('es-BO',{day:'numeric',month:'long'
 export function renderPdf(report) {
   report=uppercaseAcademicData(report);
   return new Promise((resolve,reject)=>{
-    const doc=new PDFDocument({size:'LETTER',margins:{top:42,right:42,bottom:20,left:42},info:{Title:'Planilla de notas · Ceicom',Author:'Instituto Tecnológico Ceicom',Subject:report.offering.subject},autoFirstPage:false});
+    const doc=new PDFDocument({size:'LETTER',margins:{top:42,right:42,bottom:20,left:42},info:{Title:'Planilla de notas · IBM',Author:'Instituto Técnico Británico Mercantil',Subject:report.offering.subject},autoFirstPage:false});
     const chunks=[];doc.on('data',c=>chunks.push(c));doc.on('end',()=>resolve(Buffer.concat(chunks)));doc.on('error',reject);
     try {
       const pages=[];let chunk=[],height=0;
@@ -51,13 +51,13 @@ export function renderPdf(report) {
       pages.forEach((rows,pageIndex)=>{
         doc.addPage();
         const o=report.offering;
-        doc.image(logo,43,23,{fit:[64,82]});
-        doc.font('Helvetica').fontSize(8).fillColor(INK).text('INSTITUTO TECNOLÓGICO',310,36,{width:260,align:'right'});
-        doc.font('Helvetica-Bold').fontSize(23).fillColor(WINE).text('CEICOM',310,50,{width:260,align:'right'});
+        doc.image(logo,43,30,{fit:[64,64]});
+        doc.font('Helvetica').fontSize(8).fillColor(INK).text('INSTITUTO TÉCNICO BRITÁNICO MERCANTIL',310,36,{width:260,align:'right'});
+        doc.font('Helvetica-Bold').fontSize(23).fillColor(NAVY).text('IBM',310,50,{width:260,align:'right'});
         doc.font('Helvetica').fontSize(12).fillColor(INK).text(o.year,310,78,{width:260,align:'right'});
-        doc.moveTo(42,104).lineTo(570,104).strokeColor('#d8c7cf').lineWidth(.7).stroke();
-        doc.font('Helvetica-Bold').fontSize(16).fillColor(WINE).text('PLANILLA DE NOTAS',42,116,{width:528,align:'center'});
-        doc.font('Helvetica-Oblique').fontSize(8).fillColor('#8f8089').text(academicUpper(`Elaborado el ${dateLabel(report.generated_at)}`),42,137,{width:528,align:'center'});
+        doc.moveTo(42,104).lineTo(570,104).strokeColor('#c9d3df').lineWidth(.7).stroke();
+        doc.font('Helvetica-Bold').fontSize(16).fillColor(NAVY).text('PLANILLA DE NOTAS',42,116,{width:528,align:'center'});
+        doc.font('Helvetica-Oblique').fontSize(8).fillColor('#56667c').text(academicUpper(`Elaborado el ${dateLabel(report.generated_at)}`),42,137,{width:528,align:'center'});
         if(report.draft)doc.font('Helvetica-Bold').fontSize(7).fillColor('#96753f').text('BORRADOR · NOTAS PENDIENTES / DOCUMENTO PARA REVISIÓN',42,149,{width:528,align:'center'});
         const meta=(label,value,y,width=450)=>{doc.font('Helvetica-Bold').fontSize(8).fillColor(INK).text(label,43,y,{width:65});doc.font('Helvetica').fontSize(8).text(value,108,y,{width});};
         meta('CARRERA:',o.career.toLocaleUpperCase('es'),160);
@@ -84,13 +84,13 @@ export function renderPdf(report) {
           y+=row.height;rendered++;
         }
         while(rendered<20 && y+18<=650){[(rows.at(-1)?.number||0)+rendered-rows.length+1,'','','','','',''].forEach((v,i)=>cell(x[i],y,widths[i],18,v,'#fff','Helvetica',7));y+=18;rendered++;}
-        doc.font('Helvetica').fontSize(7).fillColor('#8f8089').text('ESCALA: 1 A 100 PUNTOS · APROBACIÓN DESDE 61 · ROJO: ESTUDIANTE REPROBADO',43,Math.max(y+11,661),{width:528});
+        doc.font('Helvetica').fontSize(7).fillColor('#56667c').text('ESCALA: 1 A 100 PUNTOS · APROBACIÓN DESDE 61 · ROJO: ESTUDIANTE REPROBADO',43,Math.max(y+11,661),{width:528});
         if(report.legacy)doc.fontSize(6.5).text('—: DESGLOSE NO REGISTRADO EN NOTAS ANTERIORES. LA NOTA FINAL ORIGINAL SE CONSERVA.',43,676,{width:528});
         doc.moveTo(49,717).lineTo(267,717).moveTo(345,717).lineTo(563,717).strokeColor(INK).lineWidth(.5).stroke();
         doc.font('Helvetica-Bold').fontSize(8).fillColor(INK).text(o.teacher.toLocaleUpperCase('es'),49,725,{width:218,align:'center'});
         doc.font('Helvetica').fontSize(7).text('DOCENTE',49,740,{width:218,align:'center'});
         doc.font('Helvetica-Bold').fontSize(8).text('DIRECCIÓN ACADÉMICA',345,725,{width:218,align:'center'});
-        doc.font('Helvetica').fontSize(7).fillColor('#998b94').text(`CEICOM · REGISTRO ACADÉMICO · PLANILLA ${o.id}`,43,760,{width:390});
+        doc.font('Helvetica').fontSize(7).fillColor('#626f81').text(`IBM · REGISTRO ACADÉMICO · PLANILLA ${o.id}`,43,760,{width:390});
         doc.text(`PÁGINA ${pageIndex+1} DE ${pages.length}`,450,760,{width:120,align:'right'});
       });
       doc.end();
@@ -100,15 +100,15 @@ export function renderPdf(report) {
 
 export async function renderExcel(report){
   report=uppercaseAcademicData(report);
-  const workbook=new ExcelJS.Workbook();workbook.creator='Instituto Tecnológico Ceicom';workbook.created=new Date(report.generated_at);
+  const workbook=new ExcelJS.Workbook();workbook.creator='Instituto Técnico Británico Mercantil';workbook.created=new Date(report.generated_at);
   const sheet=workbook.addWorksheet('PLANILLA DE NOTAS',{pageSetup:{paperSize:1,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0,horizontalCentered:true,margins:{left:.4,right:.3,top:.2,bottom:.3,header:0,footer:.15},printTitlesRow:'1:14'},views:[{state:'frozen',ySplit:14,showGridLines:false}]});
   const o=report.offering;
   sheet.columns=[{width:2},{width:4},{width:12},{width:14},{width:14},{width:9},{width:9},{width:9},{width:9},{width:17}];
-  const merge=(range,text,size=10,bold=false,align='left')=>{sheet.mergeCells(range);const cell=sheet.getCell(range.split(':')[0]);cell.value=text;cell.font={name:'Times New Roman',size,bold,color:{argb:'FF302A30'}};cell.alignment={horizontal:align,vertical:'middle',wrapText:true};};
-  const image=workbook.addImage({buffer:logo,extension:'png'});sheet.addImage(image,{tl:{col:1,row:0},ext:{width:78,height:100}});
+  const merge=(range,text,size=10,bold=false,align='left')=>{sheet.mergeCells(range);const cell=sheet.getCell(range.split(':')[0]);cell.value=text;cell.font={name:'Times New Roman',size,bold,color:{argb:'FF1B2B43'}};cell.alignment={horizontal:align,vertical:'middle',wrapText:true};};
+  const image=workbook.addImage({buffer:logo,extension:'png'});sheet.addImage(image,{tl:{col:1,row:0},ext:{width:76,height:76}});
   for(let r=1;r<=6;r++)sheet.getRow(r).height=15;
-  merge('F3:J3','INSTITUTO TECNOLÓGICO',11,true,'right');
-  merge('H4:J4','CEICOM',18,true,'center');merge('H5:J5',o.year,14,true,'center');
+  merge('D3:J3','INSTITUTO TÉCNICO BRITÁNICO MERCANTIL',10,true,'right');
+  merge('H4:J4','IBM',18,true,'center');merge('H5:J5',o.year,14,true,'center');
   if(report.draft)merge('F6:J6','BORRADOR · PARA REVISIÓN',9,true,'right');
   merge('A7:J7','PLANILLA DE NOTAS',16,true,'center');sheet.getRow(7).height=23;
   merge('D8:J8',academicUpper(`Elaborado el ${dateLabel(report.generated_at)}`),10,false,'center');sheet.getRow(8).height=19;
@@ -148,7 +148,7 @@ export async function renderExcel(report){
   merge(`B${note+1}:J${note+1}`,report.legacy?'—: nota anterior sin desglose; se conserva su total original.':'Excel editable: cambiar puntajes recalcula la nota final. No modifica el portal.',8);sheet.getRow(note+1).height=15;
   const signature=last+6;merge(`B${signature}:E${signature}`,o.teacher.toLocaleUpperCase('es'),9,true,'center');merge(`G${signature}:J${signature}`,'FIRMA DIRECCIÓN ACADÉMICA',9,true,'center');sheet.getRow(signature).height=25;
   for(const cell of [sheet.getCell(signature,2),sheet.getCell(signature,7)])cell.border={top:{style:'thin'}};
-  sheet.pageSetup.printArea=`A1:J${signature+1}`;sheet.headerFooter.oddFooter=report.draft?'&LBORRADOR · Registro académico&RPÁGINA &P de &N':'&LCeicom · Registro académico&RPÁGINA &P de &N';
+  sheet.pageSetup.printArea=`A1:J${signature+1}`;sheet.headerFooter.oddFooter=report.draft?'&LBORRADOR · Registro académico&RPÁGINA &P de &N':'&LIBM · Registro académico&RPÁGINA &P de &N';
   sheet.eachRow(row=>row.eachCell(cell=>{if(typeof cell.value==='string')cell.value=academicUpper(cell.value);}));
   sheet.headerFooter.oddFooter=academicUpper(sheet.headerFooter.oddFooter);
   workbook.calcProperties.fullCalcOnLoad=true;return Buffer.from(await workbook.xlsx.writeBuffer());

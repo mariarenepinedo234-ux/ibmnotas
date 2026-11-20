@@ -6,8 +6,6 @@
     "COMERCIO INTERNACIONAL Y ADMINISTRACIÓN ADUANERA",
     "CONTADURÍA GENERAL",
     "DISEÑO GRÁFICO",
-    "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-    "ELECTRÓNICA",
     "MERCADOTECNIA",
     "SECRETARIADO EJECUTIVO",
     "SISTEMAS INFORMÁTICOS"
@@ -788,18 +786,6 @@
       "code": "FDI-101"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "MEDIOS AUDIOVISUALES",
-      "code": "MAU-101"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "SEGURIDAD INDUSTRIAL Y MEDIO AMBIENTE",
-      "code": "SIM-100"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "INGLÉS TÉCNICO",
@@ -810,18 +796,6 @@
       "level": 1,
       "name": "COMUNICACIÓN VISUAL",
       "code": "COV-102"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "FOTOGRAFÍA BÁSICA",
-      "code": "FOB-102"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "ALGEBRA Y CALCULO",
-      "code": "ALC-100"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -836,18 +810,6 @@
       "code": "DVE-103"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "COMPUTACIÓN GRÁFICA DE IMAGEN",
-      "code": "CGI-103"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "ANÁLISIS DE CIRCUITOS DE CORRIENTE CONTINUA",
-      "code": "ACC-100"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "PROGRAMACIÓN I",
@@ -858,18 +820,6 @@
       "level": 1,
       "name": "CREACIÓN DE IMÁGENES VECTORIALES",
       "code": "CDI-104"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "EDICIÓN DIGITAL",
-      "code": "EDD-104"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "FÍSICA",
-      "code": "INC-100"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -884,18 +834,6 @@
       "code": "TIP-105"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "TALLER DE SONIDO",
-      "code": "TDS-105"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "INSTRUMENTOS Y COMPONENTES",
-      "code": "INE-100"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "OFIMÁTICA Y TECNOLOGÍA MULTIMEDIA",
@@ -908,18 +846,6 @@
       "code": "TAC-106"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "HISTORIA DEL ARTE",
-      "code": "HDA-106"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "INSTALACIONES ELÉCTRICAS",
-      "code": "SIC-100"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 1,
       "name": "DISEÑO Y PROGRAMACIÓN WEB I",
@@ -930,78 +856,6 @@
       "level": 1,
       "name": "INGLES TÉCNICO",
       "code": "INT-107"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "PRODUCCIÓN AUDIOVISUAL",
-      "code": "PRA-201"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "SISTEMAS CAD",
-      "code": "SIM-200"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "LENGUAJE DE LA IMAGEN",
-      "code": "LDI-202"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "SEGURIDAD INDUSTRIAL Y MEDIO AMBIENTE II",
-      "code": "ACC-200"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "TALLER DE CAMAROGRAFIA",
-      "code": "TDC-203"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "ANÁLISIS DE CIRCUITOS DE CORRIENTE ALTERNA",
-      "code": "ELA-200"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "GUION CINEMATOGRÁFICO",
-      "code": "GCI-204"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "ELECTRÓNICA ANALÓGICA",
-      "code": "ELD-200"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "FOTOGRAFÍA EN MOVIMIENTO I",
-      "code": "FEM-205"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "ALGORITMOS Y ESTRUCTURAS",
-      "code": "ALE-200"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 1,
-      "name": "FOTOGRAFÍA BLANCO Y NEGRO",
-      "code": "FBN-206"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 1,
-      "name": "INGLES TÉCNICO",
-      "code": "INT-200"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1019,18 +873,6 @@
       "code": "MEL-201"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "TALLER DE MONTAJE",
-      "code": "TDM-301"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "LÍNEAS DE TRANSMISIÓN Y ANTENAS",
-      "code": "LTA-300"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "PROGRAMACIÓN II",
@@ -1043,18 +885,6 @@
       "code": "IGR-202"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "PUESTA EN ESCENA",
-      "code": "PEE-302"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "MAQUINAS E INSTALACIONES INDUSTRIALES",
-      "code": "MII-300"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "REDES DE COMPUTADORAS I",
@@ -1065,18 +895,6 @@
       "level": 2,
       "name": "AUDIOVISUAL",
       "code": "AUD-203"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "FOTOGRAFÍA CON LUZ ARTIFICIAL",
-      "code": "FLA-303"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "OPERACIONALES Y APLICACIONES",
-      "code": "OAP-300"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1094,18 +912,6 @@
       "code": "EMP-204"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "GUION CINEMATOGRÁFICO II",
-      "code": "GCI-304"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "SISTEMAS LÓGICOS PROGRAMABLES",
-      "code": "SLP-300"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "ANÁLISIS Y DISEÑO DE SISTEMAS I",
@@ -1116,18 +922,6 @@
       "level": 2,
       "name": "MARKETING",
       "code": "MRK-205"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "FOTOGRAFÍA EN MOVIMIENTO II",
-      "code": "FEM-305"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "PROGRAMACIÓN",
-      "code": "PRO-300"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1142,18 +936,6 @@
       "code": "DMO-206"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "HISTORIA DEL CINE",
-      "code": "HDC-306"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "EMPRENDIMIENTO PRODUCTIVO",
-      "code": "EMP-300"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "BASE DE DATOS I",
@@ -1166,82 +948,10 @@
       "code": "DIM-207"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "ANIMACIÓN EN 3D",
-      "code": "AED-401"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "SISTEMAS DE TELECOMUNICACIONES",
-      "code": "SIT-400"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 2,
       "name": "EMPRENDIMIENTO PRODUCTIVO",
       "code": "ELE-208"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "REALIZACIÓN DOCUMENTAL",
-      "code": "RED-402"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "ELECTROACÚSTICA",
-      "code": "ELE-400"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "DIRECCIÓN DE CINE Y VIDEO",
-      "code": "DCV-403"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "ELECTRÓNICA INDUSTRIAL",
-      "code": "ELI-400"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "FOTOGRAFÍA EN MOVIMIENTO III",
-      "code": "FEM-404"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "MANTENIMIENTO DE EQUIPOS ELÉCTRICOS",
-      "code": "MAE-400"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "AUDIO DIRECTO",
-      "code": "AUD-405"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "ARQUITECTURA Y REDES DE COMPUTADORAS",
-      "code": "ARD-400"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 2,
-      "name": "ESPACIOS FOTOGRÁFICOS",
-      "code": "ESF-406"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 2,
-      "name": "MICROCONTROLADORES",
-      "code": "MIC-400"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1256,18 +966,6 @@
       "code": "DGD-301"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "GUION DE TELEVISIÓN",
-      "code": "GDT-501"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "SISTEMAS DE CONTROL",
-      "code": "SDC-500"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "REDES DE COMPUTADORAS II",
@@ -1280,18 +978,6 @@
       "code": "SIM-302"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "TALLER DE ANIMACIÓN",
-      "code": "TDA-502"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "AUTÓMATAS PROGRAMABLES",
-      "code": "AUP-500"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "DISEÑO Y PROGRAMACIÓN WEB III",
@@ -1302,18 +988,6 @@
       "level": 3,
       "name": "PROYECTOS DE DISEÑO",
       "code": "PDG-303"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "REALIZACIÓN DE FICCIÓN",
-      "code": "RDF-503"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "SISTEMAS NEUMÁTICOS",
-      "code": "SIN-500"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1331,18 +1005,6 @@
       "code": "DDI-304"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "FOTOGRAFÍA EN MOVIMIENTO IV",
-      "code": "FEM-504"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "SISTEMAS DE TELEFONÍA",
-      "code": "SIT-500"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "ANÁLISIS Y DISEÑO DE SISTEMAS II",
@@ -1353,18 +1015,6 @@
       "level": 3,
       "name": "PENSAMIENTO CREATIVO Y PROTOTIPADO",
       "code": "PCP-305"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "DIRECCIÓN DE TELEVISIÓN",
-      "code": "DDT-505"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "REDES Y GESTIÓN DE DATOS",
-      "code": "RGD-500"
     },
     {
       "career": "SISTEMAS INFORMÁTICOS",
@@ -1379,18 +1029,6 @@
       "code": "PPR-306"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "FUNDAMENTOS DE MERCADOTECNIA",
-      "code": "FME-506"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "TALLER DE MODALIDAD DE GRADUACIÓN I",
-      "code": "TMG-500"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "PROYECTOS DE INNOVACIÓN Y COMPUTACIÓN EN LA NUBE",
@@ -1403,18 +1041,6 @@
       "code": "APD-307"
     },
     {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "EMPRENDIMIENTO PRODUCTIVO",
-      "code": "EMP-601"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "CONTROL DIGITAL",
-      "code": "COD-600"
-    },
-    {
       "career": "SISTEMAS INFORMÁTICOS",
       "level": 3,
       "name": "TALLER DE MODALIDAD DE GRADUACIÓN",
@@ -1425,66 +1051,6 @@
       "level": 3,
       "name": "TALLER DE MODALIDAD DE GRADUACIÓN",
       "code": "TDG-308"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "EFECTOS ESPECIALES",
-      "code": "EFE-602"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "SISTEMAS SCADA",
-      "code": "SIS-600"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "REALIZACIÓN TELEVISIVA",
-      "code": "RET-603"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "ROBÓTICA INDUSTRIAL",
-      "code": "ROI-600"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "PRODUCCIÓN DIGITAL DE AUDIO E IMAGEN",
-      "code": "PAI-604"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "SISTEMAS ELECTRONEUMÁTICOS",
-      "code": "SEN-600"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "TALLER DE MODALIDAD DE GRADUACIÓN",
-      "code": "TDG-605"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "FIBRA ÓPTICA",
-      "code": "FIO-600"
-    },
-    {
-      "career": "DISEÑO Y PRODUCCIÓN DE AUDIOVISUALES - GUIONIZACIÓN",
-      "level": 3,
-      "name": "ÉTICA PROFESIONAL",
-      "code": "ETP-606"
-    },
-    {
-      "career": "ELECTRÓNICA",
-      "level": 3,
-      "name": "TALLER DE MODALIDAD DE GRADUACIÓN II",
-      "code": "TMG-600"
     }
   ]
 }

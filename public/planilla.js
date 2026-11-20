@@ -12,7 +12,7 @@ export function planillaHTML(report) {
   }
   if(rows.length||!pages.length)pages.push({rows,height});
   return pages.map(({rows,height},index)=>`<article class="letter-sheet" aria-label="Planilla de notas, página ${index+1}">
-    <header class="sheet-header"><div class="sheet-emblem"><img src="/assets/ceicom-logo.png" alt="Escudo de Ceicom"></div><div><span>INSTITUTO TECNOLÓGICO</span><strong>CEICOM</strong><b>${esc(o.year)}</b></div></header>
+    <header class="sheet-header"><div class="sheet-emblem"><img src="/assets/logo_ibm.png" alt=""></div><div><span>INSTITUTO TÉCNICO BRITÁNICO MERCANTIL</span><strong>IBM</strong><b>${esc(o.year)}</b></div></header>
     <div class="sheet-title"><span>REGISTRO ACADÉMICO</span><h2>PLANILLA DE NOTAS</h2><p>Elaborado el ${esc(date)}</p>${report.pending?'<b class="sheet-draft">BORRADOR · NOTAS PENDIENTES</b>':''}</div>
     <dl class="sheet-metadata"><div><dt>CARRERA:</dt><dd>${esc(o.career.toLocaleUpperCase('es'))}</dd></div><div><dt>MATERIA:</dt><dd>${esc(`${o.subject}${o.subject_code?' ('+o.subject_code+')':''}`.toLocaleUpperCase('es'))}</dd></div><div class="sheet-meta-split"><div><dt>CURSO:</dt><dd>${esc(o.course)}</dd></div><div><dt>TURNO:</dt><dd>${esc(o.shift.toLocaleUpperCase('es'))}</dd></div></div><div><dt>PERÍODO:</dt><dd>${esc(o.module.toLocaleUpperCase('es'))} · GESTIÓN ${esc(o.year)}</dd></div></dl>
     <table class="sheet-table"><colgroup><col class="col-number"><col class="col-name"><col class="col-dimension"><col class="col-dimension"><col class="col-dimension"><col class="col-final"><col class="col-status"></colgroup><thead><tr><th rowspan="2">Nº</th><th rowspan="2">APELLIDOS Y NOMBRES</th><th colspan="3" class="dimensions-heading">DIMENSIONES</th><th rowspan="2">NOTA<br>${o.series_id?'DE LA PARTE':'FINAL'}</th><th rowspan="2">OBSERVACIÓN</th></tr><tr><th>SABER<small>40 pts</small></th><th>HACER<small>40 pts</small></th><th>SER<small>20 pts</small></th></tr></thead><tbody>${Array.from({length:rows.length+Math.min(20-rows.length,Math.max(0,Math.floor((tableHeight-height)/23)))},(_,i)=>{
@@ -22,6 +22,6 @@ export function planillaHTML(report) {
     <p class="sheet-legend">Escala de 1 a 100 puntos · Aprobación desde 61 · <span>Rojo: estudiante reprobado</span></p>
     ${report.legacy?'<p class="sheet-legacy">—: desglose no registrado en notas anteriores. Se conserva la nota final original.</p>':''}
     <div class="sheet-signatures"><div><strong>${esc(o.teacher.toLocaleUpperCase('es'))}</strong><span>DOCENTE</span></div><div><strong>DIRECCIÓN ACADÉMICA</strong><span>FIRMA Y SELLO</span></div></div>
-    <footer class="sheet-footer"><span>Ceicom · Registro académico · Planilla ${o.id}</span><span>Página ${index+1} de ${pages.length}</span></footer>
+    <footer class="sheet-footer"><span>IBM · Registro académico · Planilla ${o.id}</span><span>Página ${index+1} de ${pages.length}</span></footer>
   </article>`).join('');
 }

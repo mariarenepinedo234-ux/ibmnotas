@@ -351,5 +351,5 @@ if(process.argv[1] && import.meta.url===pathToFileURL(resolve(process.argv[1])).
   if(process.env.SEED_DEMO==='true'){const {seedDemo}=await import('./seed.js');await seedDemo(db);}
   const server=createApp(db);const port=Number(process.env.PORT||3000);
   for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>server.close(async()=>{await db.close();process.exit(0);}));
-  server.listen(port,'0.0.0.0',()=>console.log(`Ceicom iniciado en el puerto ${port}. Base PostgreSQL conectada.`));
+  server.listen(port,'0.0.0.0',()=>console.log(`IBM iniciado en el puerto ${port}. Base PostgreSQL conectada.`));
 }
