@@ -4,7 +4,7 @@
 
 BEGIN;
 
-CREATE TEMP TABLE ibm_catalog_import_session (marker boolean) ON COMMIT DROP;
+CREATE TEMP TABLE ibm_catalog_career_names (career_id integer, name text) ON COMMIT DROP;
 
 CREATE FUNCTION pg_temp.ibm_name_key(value text)
 RETURNS text LANGUAGE sql IMMUTABLE STRICT AS $key$
@@ -949,21 +949,32 @@ BEGIN
   PERFORM pg_advisory_xact_lock(731202604);
   -- Serializa cambios del catálogo durante la carga.
   LOCK TABLE careers, subjects IN SHARE ROW EXCLUSIVE MODE;
+  IF to_regclass('career_names_by_year') IS NOT NULL THEN
+    EXECUTE 'INSERT INTO ibm_catalog_career_names SELECT career_id,name FROM career_names_by_year';
+  END IF;
 
   FOR career_name IN SELECT jsonb_array_elements_text(catalog->'careers') LOOP
     career_key := pg_temp.ibm_name_key(career_name);
     SELECT count(*), min(id) INTO matches, career_id_found
-    FROM careers
+    FROM careers AS career
     WHERE pg_temp.ibm_name_key(name) = career_key
        OR (career_key = 'COMERCIO INTERNACIONAL Y ADMINISTRACION ADUANERA'
-           AND pg_temp.ibm_name_key(name) = 'COMERCIO INTERNACIONAL');
+           AND pg_temp.ibm_name_key(name) = 'COMERCIO INTERNACIONAL')
+       OR EXISTS (
+         SELECT 1 FROM ibm_catalog_career_names AS history
+         WHERE history.career_id = career.id
+           AND (pg_temp.ibm_name_key(history.name) = career_key
+                OR (career_key = 'COMERCIO INTERNACIONAL Y ADMINISTRACION ADUANERA'
+                    AND pg_temp.ibm_name_key(history.name) = 'COMERCIO INTERNACIONAL'))
+       );
     IF matches > 1 THEN
       RAISE EXCEPTION 'Hay varias carreras equivalentes a %. Revisa el catálogo.', career_name;
     END IF;
     IF career_id_found IS NULL THEN
       INSERT INTO careers(name) VALUES (career_name) RETURNING id INTO career_id_found;
     ELSE
-      UPDATE careers SET name = career_name WHERE id = career_id_found AND name <> career_name;
+      UPDATE careers SET name = career_name WHERE id = career_id_found AND name <> career_name
+        AND NOT EXISTS (SELECT 1 FROM ibm_catalog_career_names WHERE career_id = career_id_found);
     END IF;
 
     FOR entry IN
