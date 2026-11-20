@@ -68,12 +68,13 @@ export async function applyCatalog(db,payload,actorId=null,{withinTransaction=fa
     await db.query('SELECT pg_advisory_xact_lock(731202604)');
     const result={careers_created:0,careers_renamed:0,subjects_created:0,subjects_updated:0,subjects_reordered:0,teachers_pending:0,teachers_linked:0};
     const existingCareers=await db.prepare('SELECT * FROM careers').all(),ids=new Map();
+    const historicalNames=await db.prepare('SELECT career_id,name FROM career_names_by_year').all();
     for(const name of payload.careers){
-      const matches=existingCareers.filter(c=>careerKey(c.name)===careerKey(name));
+      const matches=existingCareers.filter(c=>careerKey(c.name)===careerKey(name)||historicalNames.some(h=>h.career_id===c.id&&careerKey(h.name)===careerKey(name)));
       if(matches.length>1)throw new Error('Hay dos carreras equivalentes registradas. Revisa el catálogo antes de importar.');
       let career=matches[0];
       if(!career){career=(await db.query('INSERT INTO careers(name) VALUES ($1) RETURNING id,name',[name])).rows[0];result.careers_created++;}
-      else if(career.name!==name){await db.prepare('UPDATE careers SET name=? WHERE id=?').run(name,career.id);result.careers_renamed++;}
+      else if(career.name!==name&&!historicalNames.some(h=>h.career_id===career.id)){await db.prepare('UPDATE careers SET name=? WHERE id=?').run(name,career.id);result.careers_renamed++;}
       ids.set(careerKey(name),career.id);
     }
     const positions=new Map();

@@ -52,9 +52,10 @@ export async function loadRosters(db,input,actorId=null){
       moduleId=(await db.query('INSERT INTO modules(name,year_id,start_date,end_date) VALUES ($1,$2,$3,$4) RETURNING id',[moduleName,academicId,module.start_date,module.end_date])).rows[0].id;
     }
     if(!await moduleAcceptsAdmission(db,moduleId,admissionId))throw new Error('El ingreso tiene un calendario propio. Usa Registrar grupo y elige su módulo específico.');
-    const careers=await db.prepare('SELECT * FROM careers').all(),reused=new Set();
+    const careers=await db.prepare('SELECT id,name,career_name_for_year(id,name,?) academic_name FROM careers').all(year),reused=new Set();
     for(const group of input.groups){
-      const career=careers.filter(c=>careerKey(c.name)===careerKey(required(group.career,'Carrera')));if(career.length!==1)throw new Error('La carrera debe coincidir con un único registro.');
+      const requestedCareer=careerKey(required(group.career,'Carrera'));
+      const career=careers.filter(c=>careerKey(c.academic_name)===requestedCareer||careerKey(c.name)===requestedCareer);if(career.length!==1)throw new Error('La carrera debe coincidir con un único registro.');
       if(!Array.isArray(group.students)||!group.students.length||group.students.length>200)throw new Error('Cada grupo requiere de 1 a 200 estudiantes.');
       const subjectName=academicUpper(required(group.subject,'Materia')),code=group.code?required(group.code,'Código').toUpperCase():null;
       if(code&&!/^[A-Z0-9][A-Z0-9._/-]{0,39}$/.test(code))throw new Error('Código de materia inválido.');

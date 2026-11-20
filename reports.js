@@ -13,7 +13,7 @@ const levelName={1:'PRIMERO',2:'SEGUNDO',3:'TERCERO'};
 export const statusFor=grade=>grade===null?'PENDIENTE':grade>=61?'APROBADO':'REPROBADO';
 export async function reportData(db,id) {
   return db.transaction(async()=>{
-  const offering=(await db.prepare(`SELECT o.*,s.name subject,s.code subject_code,s.level,c.name career,m.name module,m.start_date,m.end_date,y.name AS "year",sh.name shift,u.name teacher
+  const offering=(await db.prepare(`SELECT o.*,s.name subject,s.code subject_code,s.level,career_name_for_year(c.id,c.name,y.name) career,m.name module,m.start_date,m.end_date,y.name AS "year",sh.name shift,u.name teacher
     FROM offerings o JOIN subjects s ON s.id=o.subject_id JOIN careers c ON c.id=s.career_id
     JOIN modules m ON m.id=o.module_id JOIN years y ON y.id=m.year_id
     JOIN shifts sh ON sh.id=o.shift_id JOIN users u ON u.id=o.teacher_id WHERE o.id=?`).get(id));

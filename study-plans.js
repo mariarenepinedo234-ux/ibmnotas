@@ -4,7 +4,7 @@ import {academicUpper} from './public/academic-text.js';
 export const MAX_PLAN_SIZE=20*1024*1024;
 const failure=(message,status=400)=>Object.assign(new Error(message),{status});
 const integer=(value,label)=>{const n=Number(value);if(!Number.isSafeInteger(n)||n<1||n>2147483647)throw failure(`Selecciona ${label}.`);return n;};
-const summarySql=`SELECT p.id,p.title,p.career_id,upper(c.name) AS career,p.level,p.original_name,p.size_bytes,p.created_at
+const summarySql=`SELECT p.id,p.title,p.career_id,upper(career_name_for_year(c.id,c.name,NULL)) AS career,p.level,p.original_name,p.size_bytes,p.created_at
   FROM study_plans p JOIN careers c ON c.id=p.career_id`;
 const links=plan=>({...plan,view_url:`/api/study-plans/${plan.id}/file`,download_url:`/api/study-plans/${plan.id}/file?download=1`});
 

@@ -133,7 +133,7 @@ function modules(){const scope=user.role==='student'?String(data.calendar_admiss
 function deadlineForDisplay(m){let d=new Date(m.end_date+'T23:59:59-04:00'),n=72;while(n){d=new Date(+d+3600000);const day=new Date(+d-14400000).getUTCDay();if(day!==0&&day!==6)n--;}return d.toISOString();}
 function grades(){
   const offerings=currentOfferings().filter(o=>(!filters.career||String(o.career_id)===filters.career)&&(o.subject+' '+o.career+' '+o.shift).toLowerCase().includes(search.toLowerCase()));
-  const careers=data.careers.filter(c=>data.offerings.some(o=>o.career_id===c.id));
+  const careers=[...new Map(currentOfferings().map(o=>[o.career_id,{id:o.career_id,name:o.career}])).values()];
   const summary=summarizeOfferings(offerings,data.enrollments),orderedSubjects=prioritizeTeacherSubjects(summary.subjects);
   return heading('ACOMPAÑA CADA LOGRO','Mis materias y grupos',`${summary.subjectCount} materias diferentes · ${summary.groupCount} grupos. Cada grupo conserva su lista y planilla.`,summaryFilters())+
     `<section class="panel">${toolbar('Buscar materia, carrera o turno…',`<select id="career-filter" aria-label="Filtrar carrera"><option value="">Todas las carreras</option>${opts(careers,'id','name',filters.career)}</select>`)}</section>`+
@@ -208,7 +208,19 @@ function bindPage(){
 
   document.querySelectorAll('[data-edit-career]').forEach(button=>button.onclick=()=>{
     const career=data.careers.find(entry=>entry.id===Number(button.dataset.editCareer));
-    formModal('Editar carrera',field('Nombre de la carrera','name','text',career.name,'maxlength="160"'),'career-edit',{career_id:career.id},'El cambio de nombre conserva los estudiantes, las materias y su historial.');
+    const years=data.years.filter(year=>/^20[0-9]{2}$/.test(year.name));
+    if(!years.length){toast('Crea primero la gestión en la que entrará en vigencia el nombre.',true);return;}
+    const history=career.name_history;
+    const fields=select('Vigente desde la gestión','year_id',years,'id','name',selectedYear)
+      +field('Nombre de la carrera','name','text',career.name,'maxlength="160"')
+      +`<div class="notice full"><div><strong>Nombres registrados</strong><p>Nombre original: ${escape(career.original_name)}</p>${history.map(change=>`<p>Desde ${escape(change.effective_year)}: ${escape(change.name)}</p>`).join('')}</div></div>`;
+    formModal('Editar carrera',fields,'career-edit',{career_id:career.id},'Las gestiones anteriores a la seleccionada conservan sus nombres.');
+    const effectiveYear=$('#dialog-form [name=year_id]');
+    effectiveYear.onchange=()=>{
+      const year=years.find(entry=>String(entry.id)===effectiveYear.value);
+      if(year)$('#dialog-form [name=name]').value=history.findLast(change=>change.effective_year<=year.name)?.name||career.original_name;
+    };
+    effectiveYear.onchange();
   });
   document.querySelectorAll('[data-delete-career]').forEach(button=>button.onclick=()=>{
     const career=data.careers.find(entry=>entry.id===Number(button.dataset.deleteCareer));

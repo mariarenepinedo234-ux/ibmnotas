@@ -17,7 +17,7 @@ import { pathToFileURL } from 'node:url';
 import { openDatabase } from './db.js';
 import { hashPassword, verifyPassword, canGrade, deadlineFor, validGrade, dimensionGrades } from './lib.js';
 import { reportData, renderPdf, renderExcel, reportFilename } from './reports.js';
-import {parseCatalog,applyCatalog,activateTeacher} from './catalog.js';
+import {parseCatalog,applyCatalog,activateTeacher,keyOf} from './catalog.js';
 import {updateStudentProfile} from './rosters.js';
 
 const safeUser = u => ({ id:u.id, ci:u.ci, name:academicUpper(u.name), role:u.role, must_change:!!u.must_change, blocked:!!u.blocked });
@@ -121,21 +121,26 @@ export function createApp(db,{backupDirectory,backupNative=process.env.BACKUP_MO
       if(path==='/api/data' && req.method==='GET') {
         if(user.role==='student' && user.blocked) return send({blocked:true});
         const admin=user.role==='admin'; const teacher=user.role==='teacher';
-        const offeringSql=`SELECT o.*, s.name subject, s.code subject_code, s.catalog_order, s.career_id, s.level, ps.part_count,ps.completed series_complete, m.admission_year_id module_admission_year_id, ay.name module_admission_year, c.name career, m.name module, m.start_date, m.end_date, m.year_id, y.name AS "year", sh.name shift, u.name teacher FROM offerings o JOIN subjects s ON s.id=o.subject_id JOIN careers c ON c.id=s.career_id JOIN modules m ON m.id=o.module_id JOIN years y ON y.id=m.year_id JOIN shifts sh ON sh.id=o.shift_id JOIN users u ON u.id=o.teacher_id LEFT JOIN years ay ON ay.id=m.admission_year_id LEFT JOIN subject_series ps ON ps.id=o.series_id`;
+        const offeringSql=`SELECT o.*, s.name subject, s.code subject_code, s.catalog_order, s.career_id, s.level, ps.part_count,ps.completed series_complete, m.admission_year_id module_admission_year_id, ay.name module_admission_year, career_name_for_year(c.id,c.name,y.name) career, m.name module, m.start_date, m.end_date, m.year_id, y.name AS "year", sh.name shift, u.name teacher FROM offerings o JOIN subjects s ON s.id=o.subject_id JOIN careers c ON c.id=s.career_id JOIN modules m ON m.id=o.module_id JOIN years y ON y.id=m.year_id JOIN shifts sh ON sh.id=o.shift_id JOIN users u ON u.id=o.teacher_id LEFT JOIN years ay ON ay.id=m.admission_year_id LEFT JOIN subject_series ps ON ps.id=o.series_id`;
         const offerings=admin?(await db.prepare(offeringSql).all()):teacher?(await db.prepare(offeringSql+' WHERE o.teacher_id=?').all(user.id)):(await db.prepare(offeringSql+' WHERE o.id IN (SELECT offering_id FROM enrollments WHERE student_id=?)').all(user.id));
         const enrollmentSql=`SELECT e.*,u.name student,u.ci,s.level student_level,y.name admission_year FROM enrollments e JOIN users u ON u.id=e.student_id JOIN students s ON s.user_id=e.student_id JOIN years y ON y.id=s.admission_year_id`;
         const enrollments=admin?(await db.prepare(enrollmentSql).all()):teacher?(await db.prepare(enrollmentSql+' JOIN offerings o ON o.id=e.offering_id WHERE o.teacher_id=?').all(user.id)):(await db.prepare(enrollmentSql+' WHERE e.student_id=?').all(user.id));
         return send(uppercaseAcademicData({
           offerings:offerings.map(raw=>{const o=decoratePart(raw);return {...o,deadline:deadlineFor(o.end_date),can_grade:canGrade(o.end_date,o.unlocked_until)};}),enrollments,
-          careers:(await db.prepare('SELECT * FROM careers').all()),shifts:(await db.prepare('SELECT * FROM shifts').all()),years:(await db.prepare('SELECT * FROM years ORDER BY name DESC').all()),
+          careers:(await db.prepare(`SELECT c.id,career_name_for_year(c.id,c.name,NULL) name,
+            c.name original_name,
+            (SELECT COALESCE(json_agg(h ORDER BY h.effective_year),'[]'::json) FROM (
+              SELECT effective_year,name FROM career_names_by_year WHERE career_id=c.id
+            ) h) name_history
+            FROM careers c`).all()),shifts:(await db.prepare('SELECT * FROM shifts').all()),years:(await db.prepare('SELECT * FROM years ORDER BY name DESC').all()),
           modules:(await db.prepare('SELECT m.*,y.name AS "year",ay.name admission_year FROM modules m JOIN years y ON y.id=m.year_id LEFT JOIN years ay ON ay.id=m.admission_year_id ORDER BY start_date').all()),
           calendar_admission_year_id:user.role==='student'?(await db.prepare('SELECT admission_year_id FROM students WHERE user_id=?').get(user.id))?.admission_year_id:null,
-          subjects:admin?(await db.prepare('SELECT s.*,c.name career FROM subjects s JOIN careers c ON c.id=s.career_id').all()):[],
-          students:admin?(await db.prepare('SELECT s.*,u.name,u.ci,u.blocked,c.name career,sh.name shift,y.name admission_year FROM students s JOIN users u ON u.id=s.user_id JOIN careers c ON c.id=s.career_id JOIN shifts sh ON sh.id=s.shift_id JOIN years y ON y.id=s.admission_year_id').all()):[],
+          subjects:admin?(await db.prepare('SELECT s.*,career_name_for_year(c.id,c.name,NULL) career FROM subjects s JOIN careers c ON c.id=s.career_id').all()):[],
+          students:admin?(await db.prepare('SELECT s.*,u.name,u.ci,u.blocked,career_name_for_year(c.id,c.name,y.name) career,sh.name shift,y.name admission_year FROM students s JOIN users u ON u.id=s.user_id JOIN careers c ON c.id=s.career_id JOIN shifts sh ON sh.id=s.shift_id JOIN years y ON y.id=s.admission_year_id').all()):[],
           teachers:admin?(await db.prepare("SELECT id,name,ci FROM users WHERE role='teacher'").all()):[],
           teacher_directory:admin?(await db.prepare('SELECT id,name,user_id FROM teacher_directory ORDER BY name').all()):[],
           group_memberships:admin?(await db.prepare('SELECT * FROM academic_group_students ORDER BY group_id,student_id').all()):[],
-          academic_groups:admin?(await db.prepare(`SELECT g.*,o.series_id,o.part_number,o.part_recovery,s.name subject,c.name career,ay.name admission_year,y.name AS "year",sh.name shift,o.teacher_id,u.name teacher,m.name module,
+          academic_groups:admin?(await db.prepare(`SELECT g.*,o.series_id,o.part_number,o.part_recovery,s.name subject,career_name_for_year(c.id,c.name,y.name) career,ay.name admission_year,y.name AS "year",sh.name shift,o.teacher_id,u.name teacher,m.name module,
             (SELECT COUNT(*) FROM academic_group_students gs WHERE gs.group_id=g.id) student_count,
             (SELECT COUNT(*) FROM enrollments e WHERE e.offering_id=g.offering_id AND e.is_retake) retake_count
             FROM academic_groups g JOIN subjects s ON s.id=g.subject_id JOIN careers c ON c.id=s.career_id
@@ -255,7 +260,15 @@ export function createApp(db,{backupDirectory,backupNative=process.env.BACKUP_MO
         const tables={career:'careers',shift:'shifts',year:'years'};
         if(!tables[b.type]) fail('Catálogo inválido.');
         if(b.type==='year' && !/^20\d{2}$/.test(name)) fail('La gestión debe ser un año entre 2000 y 2099.');
-        await transaction(async()=>{(await db.prepare(`INSERT INTO ${tables[b.type]}(name) VALUES (?)`).run(name));await audit(user.id,'Catálogo actualizado',name);});return send({ok:true});
+        await transaction(async()=>{
+          if(b.type==='career'){
+            await db.query('SELECT pg_advisory_xact_lock(731202604)');
+            const names=await db.prepare('SELECT name FROM careers UNION SELECT name FROM career_names_by_year').all();
+            if(names.some(row=>keyOf(row.name)===keyOf(name)))fail('Otra carrera ya utiliza ese nombre.',409);
+          }
+          await db.prepare(`INSERT INTO ${tables[b.type]}(name) VALUES (?)`).run(name);
+          await audit(user.id,'Catálogo actualizado',name);
+        });return send({ok:true});
       }
       if(path==='/api/subjects') {
         const name=academicUpper(required(b.name,'Materia')),yearLevel=level(b.level);

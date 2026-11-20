@@ -67,7 +67,7 @@ async function snapshot(db,type,targetId,lock=false){
     record=await db.prepare('SELECT * FROM modules WHERE id=?'+(lock?' FOR UPDATE':'')).get(targetId);if(!record)fail('Trimestre no encontrado.',404);
     offerings=await db.prepare('SELECT * FROM offerings WHERE module_id=? ORDER BY id'+(lock?' FOR UPDATE':'')).all(targetId);
   }else if(type==='offering'){
-    record=await db.prepare('SELECT o.*,s.career_id,s.level,s.name,c.name career,sh.name shift,m.name module,y.name AS "year",u.name teacher FROM offerings o JOIN subjects s ON s.id=o.subject_id JOIN careers c ON c.id=s.career_id JOIN shifts sh ON sh.id=o.shift_id JOIN modules m ON m.id=o.module_id JOIN years y ON y.id=m.year_id JOIN users u ON u.id=o.teacher_id WHERE o.id=?'+(lock?' FOR UPDATE OF o':'')).get(targetId);if(!record)fail('Asignación no encontrada.',404);offerings=[record];
+    record=await db.prepare('SELECT o.*,s.career_id,s.level,s.name,career_name_for_year(c.id,c.name,y.name) career,sh.name shift,m.name module,y.name AS "year",u.name teacher FROM offerings o JOIN subjects s ON s.id=o.subject_id JOIN careers c ON c.id=s.career_id JOIN shifts sh ON sh.id=o.shift_id JOIN modules m ON m.id=o.module_id JOIN years y ON y.id=m.year_id JOIN users u ON u.id=o.teacher_id WHERE o.id=?'+(lock?' FOR UPDATE OF o':'')).get(targetId);if(!record)fail('Asignación no encontrada.',404);offerings=[record];
   }else fail('Tipo de revisión inválido.');
   const offeringIds=offerings.map(o=>o.id);
   const enrollments=type==='student'?await db.prepare('SELECT * FROM enrollments WHERE student_id=? ORDER BY id'+(lock?' FOR UPDATE':'')).all(targetId):(await db.query('SELECT * FROM enrollments WHERE offering_id=ANY($1::int[]) ORDER BY id'+(lock?' FOR UPDATE':''),[offeringIds])).rows;
@@ -88,7 +88,7 @@ export async function offeringRosterReview(db,offeringId){
     const candidates=(await db.query(`SELECT s.*,u.name,u.ci,y.name AS admission_year FROM students s JOIN users u ON u.id=s.user_id JOIN years y ON y.id=s.admission_year_id
       WHERE s.user_id=ANY($1::int[]) OR (s.career_id=$2 AND s.shift_id=$4 AND ((s.level=$3 AND ($5::int IS NULL OR s.admission_year_id=$5)) OR s.level>$3)) ORDER BY upper(u.name),s.user_id`,[enrolled,r.career_id,r.level,r.shift_id,state.groups[0]?.admission_year_id||null])).rows;
     const admits=await moduleAdmissionRule(db,r.module_id),allowed=candidates.filter(student=>enrolled.includes(student.user_id)||student.level>r.level||admits(student.admission_year_id));
-    const detail=await db.prepare('SELECT c.name AS career,m.name AS module,y.name AS year,sh.name AS shift FROM offerings o JOIN subjects s ON s.id=o.subject_id JOIN careers c ON c.id=s.career_id JOIN modules m ON m.id=o.module_id JOIN years y ON y.id=m.year_id JOIN shifts sh ON sh.id=o.shift_id WHERE o.id=?').get(offeringId);
+    const detail=await db.prepare('SELECT career_name_for_year(c.id,c.name,y.name) AS career,m.name AS module,y.name AS year,sh.name AS shift FROM offerings o JOIN subjects s ON s.id=o.subject_id JOIN careers c ON c.id=s.career_id JOIN modules m ON m.id=o.module_id JOIN years y ON y.id=m.year_id JOIN shifts sh ON sh.id=o.shift_id WHERE o.id=?').get(offeringId);
     const profiles=await db.prepare('SELECT level,COUNT(*) count FROM students WHERE career_id=? AND shift_id=? GROUP BY level ORDER BY level').all(r.career_id,r.shift_id);
     const levels=Object.fromEntries([1,2,3].map(level=>[level,profiles.find(p=>p.level===level)?.count||0]));
     const regular=allowed.filter(s=>s.career_id===r.career_id&&s.shift_id===r.shift_id&&s.level===r.level);
@@ -195,16 +195,20 @@ export async function deleteModule(db,input,actor){
 }
 
 export async function editCareer(db,input,actor){
-  const careerId=id(input.career_id,'la carrera'),name=title(input.name);
+  const careerId=id(input.career_id,'la carrera'),name=title(input.name),yearId=id(input.year_id,'la gestión de vigencia');
   return db.transaction(async()=>{
     await db.query('SELECT pg_advisory_xact_lock(731202604)');
     const career=await db.prepare('SELECT * FROM careers WHERE id=? FOR UPDATE').get(careerId);
     if(!career)fail('Carrera no encontrada.',404);
-    const otherCareers=await db.prepare('SELECT name FROM careers WHERE id<>?').all(careerId);
-    if(otherCareers.some(other=>keyOf(other.name)===keyOf(name)))fail('Ya existe una carrera con ese nombre.',409);
-    if(career.name!==name){
-      await db.prepare('UPDATE careers SET name=? WHERE id=?').run(name,careerId);
-      await audit(db,actor,'Carrera renombrada',`Carrera ${careerId}: ${career.name} → ${name}.`);
+    const year=await db.prepare('SELECT name FROM years WHERE id=?').get(yearId);
+    if(!year||!/^20[0-9]{2}$/.test(year.name))fail('Selecciona una gestión de vigencia registrada entre 2000 y 2099.');
+    const otherNames=await db.prepare('SELECT name FROM careers WHERE id<>? UNION SELECT name FROM career_names_by_year WHERE career_id<>?').all(careerId,careerId);
+    if(otherNames.some(other=>keyOf(other.name)===keyOf(name)))fail('Otra carrera ya utiliza ese nombre.',409);
+    const previous=(await db.prepare('SELECT career_name_for_year(?,?,?) AS name').get(careerId,career.name,year.name)).name;
+    if(previous!==name){
+      await db.prepare(`INSERT INTO career_names_by_year(career_id,effective_year,name) VALUES (?,?,?)
+        ON CONFLICT (career_id,effective_year) DO UPDATE SET name=EXCLUDED.name`).run(careerId,year.name,name);
+      await audit(db,actor,'Nombre de carrera por gestión',`Carrera ${careerId}: ${previous} → ${name} · desde la gestión ${year.name}.`);
     }
     return {ok:true};
   });

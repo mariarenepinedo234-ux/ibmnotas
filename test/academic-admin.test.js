@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {testDatabase} from './helpers.js';
 import {createApp} from '../server.js';
 import {verifyPassword} from '../lib.js';
+import {updateReviewedSubjectCatalog} from '../subject-catalog-update.js';
 async function setup(t){
   const db=await testDatabase();await db.exec('UPDATE users SET must_change=0');const server=createApp(db);await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${server.address().port}`,cookies={};
   t.after(async()=>{await new Promise(r=>server.close(r));await db.cleanup();});
@@ -144,13 +145,25 @@ test('solo administración puede administrar estudiantes, docentes, grupos y tri
 test('administración renombra carreras conservando sus vínculos y elimina solo carreras sin estudiantes',async t=>{
   const {db,api,student,offering}=await setup(t);
   const originalEnrollments=await db.prepare('SELECT * FROM enrollments ORDER BY id').all();
-  const rename={career_id:student.career_id,name:'Sistemas Informáticos Actualizado'};
+  const oldModule=(await db.query("INSERT INTO modules(name,year_id,start_date,end_date) VALUES ('Módulo histórico',2,'2025-03-01','2025-06-01') RETURNING id")).rows[0].id;
+  const historical=(await db.query('INSERT INTO offerings(subject_id,module_id,shift_id,teacher_id) VALUES ($1,$2,1,2) RETURNING id',[offering.subject_id,oldModule])).rows[0].id;
+  await db.prepare("UPDATE careers SET name='ANALISTA DE SISTEMAS' WHERE id=?").run(student.career_id);
+  const rename={career_id:student.career_id,year_id:3,name:'Sistemas Informáticos'};
+  assert.equal((await api('career-edit',{...rename,year_id:undefined})).status,400);
   assert.equal((await api('career-edit',rename,'teacher')).status,403);
   assert.equal((await api('career-edit',{...rename,name:'Contaduria General'})).status,409);
   assert.equal((await api('career-edit',rename)).status,200);
   const data=(await api('data')).body;
-  assert.equal(data.students.find(row=>row.user_id===student.user_id).career,'SISTEMAS INFORMÁTICOS ACTUALIZADO');
-  assert.equal(data.offerings.find(row=>row.id===offering.id).career,'SISTEMAS INFORMÁTICOS ACTUALIZADO');
+  assert.equal(data.students.find(row=>row.user_id===student.user_id).career,'SISTEMAS INFORMÁTICOS');
+  assert.equal(data.offerings.find(row=>row.id===offering.id).career,'SISTEMAS INFORMÁTICOS');
+  assert.equal(data.offerings.find(row=>row.id===historical).career,'ANALISTA DE SISTEMAS');
+  assert.equal((await api(`reports/${historical}?draft=true`)).body.offering.career,'ANALISTA DE SISTEMAS');
+  assert.equal((await api(`reports/${offering.id}?draft=true`)).body.offering.career,'SISTEMAS INFORMÁTICOS');
+  assert.equal(data.careers.find(row=>row.id===student.career_id).name_history[0].effective_year,'2026');
+  assert.equal((await api('catalog',{type:'career',name:'Sistemas Informáticos'})).status,409);
+  await updateReviewedSubjectCatalog(db);
+  assert.equal((await db.prepare('SELECT name FROM careers WHERE id=?').get(student.career_id)).name,'ANALISTA DE SISTEMAS');
+  assert.equal((await api('data')).body.careers.length,6);
 
   const remove=career_id=>({career_id,confirm:'ELIMINAR CARRERA'});
   assert.equal((await api('career-delete',remove(student.career_id))).status,409);

@@ -398,6 +398,6 @@ Actualiza conservando `.env`, `backups` y archivos privados, ejecuta `npm instal
 
 ## Editar o eliminar una carrera
 
-Entra como administrador y abre **Gestiones y módulos → Configuración institucional → Carreras**. Usa **Editar** para corregir el nombre de una carrera en todos los registros vinculados. El sistema conserva su identidad académica y rechaza un nombre que ya usa otra carrera.
+Entra como administrador y abre **Gestiones y módulos → Configuración institucional → Carreras**. Usa **Editar** para registrar un nombre desde una gestión. Por ejemplo, selecciona **2026** para pasar de Analista de Sistemas a Sistemas Informáticos. Las asignaciones, el historial y las planillas de 2025 conservan el nombre anterior. La carrera mantiene el mismo identificador y el portal muestra los nombres registrados en el formulario.
 
 Usa **Eliminar** y escribe **ELIMINAR CARRERA** para confirmar. El sistema impide el borrado si hay estudiantes registrados en la carrera, inscritos en sus materias o incluidos en grupos pendientes. Si la carrera está libre, se eliminan también sus materias, asignaciones, grupos y planes de estudio.
