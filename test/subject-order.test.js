@@ -5,7 +5,7 @@ import {testDatabase} from './helpers.js';
 import {reviewedSubjectCatalog,updateReviewedSubjectCatalog} from '../subject-catalog-update.js';
 import {compareSubjects} from '../public/subject-order.js';
 
-test('el catálogo y los selectores siguen el Excel en las siete carreras, sin depender del ID o el nombre',async t=>{
+test('el catálogo y los selectores siguen el Excel en las seis carreras, sin depender del ID o el nombre',async t=>{
   const db=await testDatabase();t.after(()=>db.cleanup());const original=await db.prepare('SELECT * FROM enrollments ORDER BY id').all();const catalog=await reviewedSubjectCatalog();await updateReviewedSubjectCatalog(db);
   const rows=(await db.query('SELECT s.*,c.name AS career FROM subjects s JOIN careers c ON c.id=s.career_id ORDER BY s.id DESC')).rows;
   for(const career of catalog.careers)for(const level of [1,2,3]){

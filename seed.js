@@ -12,7 +12,7 @@ export async function seedDemo(db){
     await add.run('5678901', 'Lucía Vargas', 'teacher', hashPassword('5678901'), 1);
     const names = ['Valentina Rojas','Sebastián Flores','Camila Gutiérrez','Mateo Fernández','Isabella Quispe','Santiago Mamani','Luciana Castro','Nicolás Suárez'];
     for(const [i,name] of names.entries())await add.run(String(7000001+i), name, 'student', hashPassword(String(7000001+i)), 1);
-    await db.exec(`INSERT INTO careers(name) VALUES ('Sistemas Informáticos'),('Contaduría General'),('Secretariado Ejecutivo'),('Administración de Empresas'),('Comercio Internacional'),('Mercadotecnia'),('Diseño Gráfico');
+    await db.exec(`INSERT INTO careers(name) VALUES ('Sistemas Informáticos'),('Contaduría General'),('Secretariado Ejecutivo'),('Administración de Empresas'),('Comercio Internacional'),('Mercadotecnia');
       INSERT INTO shifts(name) VALUES ('Mañana'),('Tarde'),('Noche'),('Sábados');
       INSERT INTO years(name) VALUES ('2024'),('2025'),('2026');
       INSERT INTO subjects(name,career_id,level) VALUES ('Programación I',1,1),('Base de Datos I',1,1),('Diseño y Desarrollo Web',1,2),('Contabilidad Básica',2,1),('Ofimática',3,1);

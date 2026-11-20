@@ -53,7 +53,7 @@ Los resúmenes administrativos y docentes distinguen **materias diferentes** de 
 
 Las pantallas de Materias y asignaciones y Docentes no muestran el botón Importar Excel. Para revisar un catálogo institucional desde la terminal usa `npm run catalogo:importar -- "archivo.xlsx"`; añade `--aplicar` para guardarlo. Se utiliza exclusivamente la hoja **BASE DE DATOS**: lista de carreras y docentes en columna B, y bloques de materias/códigos encabezados por carrera y año. Las otras hojas no se usan para cargar estudiantes, notas ni asignaciones. No se ejecutan fórmulas del archivo. Límite: 2 MB comprimido y 40 MB expandido.
 
-La importación actualiza coincidencias por código, carrera y año, permite códigos compartidos entre carreras, conserva las materias ausentes y se ejecuta en una transacción. Una repetición del mismo catálogo no duplica los registros. Los nombres de materias y estudiantes se guardan en mayúsculas, conservando tildes y Ñ; posibles errores de redacción se corrigen desde **Editar**. La referencia original contenía 163 materias y 23 docentes. El catálogo de IBM contiene 163 materias de siete carreras y se aplica con `npm run catalogo:actualizar`.
+La importación actualiza coincidencias por código, carrera y año, permite códigos compartidos entre carreras, conserva las materias ausentes y se ejecuta en una transacción. Una repetición del mismo catálogo no duplica los registros. Los nombres de materias y estudiantes se guardan en mayúsculas, conservando tildes y Ñ; posibles errores de redacción se corrigen desde **Editar**. La referencia original contenía 163 materias y 23 docentes. El catálogo de IBM contiene 141 materias de seis carreras y se aplica con `npm run catalogo:actualizar`.
 
 En el catálogo puedes **buscar por código/nombre**, filtrar por **carrera y año académico**, **crear** materias y **editar** nombre, código o estado. Una materia inactiva no puede asignarse nuevamente pero conserva su historial. Si ya tiene asignaciones, no se permite cambiar su carrera o año: crea otro registro para otro plan. Un código debe ser único dentro de una misma carrera y año.
 
@@ -213,7 +213,7 @@ Para actualizar, detén el portal y copia la versión completa del proyecto, con
 
 ## Catálogo corregido de noviembre de 2026
 
-Materias y asignaciones ya no muestra **Importar Excel**. El catálogo revisado del archivo recibido el 11 de noviembre de 2026 está incorporado en `catalogs/ceicom-2026.json`: 163 materias de las siete carreras de IBM, con 21 nombres corregidos. El archivo publicado contiene únicamente carreras, códigos, años y nombres de materias; no incluye el Excel ni los datos personales de sus otras hojas.
+Materias y asignaciones ya no muestra **Importar Excel**. El catálogo revisado del archivo recibido el 11 de noviembre de 2026 está incorporado en `catalogs/ceicom-2026.json`: 141 materias de las seis carreras de IBM, con 21 nombres corregidos. El archivo publicado contiene únicamente carreras, códigos, años y nombres de materias; no incluye el Excel ni los datos personales de sus otras hojas.
 
 Tras actualizar el proyecto completo, conservando `.env`, `backups` y los archivos privados, ejecuta:
 
@@ -223,7 +223,7 @@ npm run catalogo:actualizar
 npm run dev
 ```
 
-El comando aplica el catálogo a la base de tu `.env` en una transacción. Actualiza nombres por código, carrera y año, conservando IDs, estado activo/inactivo, asignaciones, inscritos y notas. Si una materia sin código coincide de forma inequívoca con un nombre anterior conocido, se corrige y se completa su código sobre el mismo ID. Añade las materias faltantes y conserva las complementarias, como Informática (Power BI), que no están en el archivo oficial. Una segunda ejecución no duplica materias; vuelve a aplicar los nombres oficiales revisados. El total del sistema puede superar las 163 materias del archivo si hay complementarias o registros históricos propios.
+El comando aplica el catálogo a la base de tu `.env` en una transacción. Actualiza nombres por código, carrera y año, conservando IDs, estado activo/inactivo, asignaciones, inscritos y notas. Si una materia sin código coincide de forma inequívoca con un nombre anterior conocido, se corrige y se completa su código sobre el mismo ID. Añade las materias faltantes y conserva las complementarias, como Informática (Power BI), que no están en el archivo oficial. Una segunda ejecución no duplica materias; vuelve a aplicar los nombres oficiales revisados. El total del sistema puede superar las 141 materias del archivo si hay complementarias o registros históricos propios.
 
 Para revisar solamente el contenido preparado, usa `npm run catalogo:actualizar -- --revisar`. Para correcciones posteriores hechas por la institución se mantienen **Crear materia**, **Editar** y la herramienta de importación por terminal. La importación completa de materias y docentes sigue disponible por terminal con el Excel actualizado; no hay botón de importación en Docentes. Presiona Ctrl + F5 después de aplicar el catálogo.
 
@@ -245,7 +245,7 @@ Vista con registros ficticios: [asignaciones por docente](docs/teacher-assignmen
 
 ## Crear una materia para varias carreras
 
-**Materias y asignaciones → Crear materia** permite elegir el año académico y marcar una o varias carreras, con **Seleccionar todas** y un contador. Por ejemplo, registra **ORATORIA**, elige **3º año**, marca todas y desmarca Diseño Gráfico. El código es opcional y puede ser el mismo en las carreras elegidas. La materia queda en sus catálogos como complementaria, después de las materias oficiales del Excel de ese año.
+**Materias y asignaciones → Crear materia** permite elegir el año académico y marcar una o varias carreras, con **Seleccionar todas** y un contador. Por ejemplo, registra **ORATORIA**, elige **3º año**, marca las carreras que correspondan. El código es opcional y puede ser el mismo en las carreras elegidas. La materia queda en sus catálogos como complementaria, después de las materias oficiales del Excel de ese año.
 
 La creación no inscribe estudiantes ni crea asignaciones docentes. Para el ingreso 2024, usa después **Estudiantes → Registrar grupo**, selecciona carrera, 3º año, ingreso 2024, gestión cursada, trimestre, turno, docente y ORATORIA; marca los estudiantes registrados correspondientes. La edición del catálogo continúa siendo individual por carrera para conservar el historial.
 

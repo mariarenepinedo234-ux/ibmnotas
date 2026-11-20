@@ -53,7 +53,7 @@ Si cambias `POSTGRES_PORT`, modifica también el puerto en `DATABASE_URL` y `TES
 
 Estos accesos no se crean en modo institucional. La primera vez debes cambiar cada contraseña por una diferente de al menos 8 caracteres. Después usa la nueva; los botones de demostración completan únicamente la contraseña inicial.
 
-El ejemplo tiene siete carreras, cuatro turnos, materias y módulos de 2026. Selecciona **Gestión 2026 → Módulo 4** para probar Programación I. El docente ve las materias por carrera y registra **Saber 40 + Hacer 40 + Ser 20**. Ejemplos: 20+30+10=60 (reprobado), 20+30+11=61 (aprobado), 40+40+20=100. Guarda todas las notas finales para descargar la planilla PDF o Excel. El estudiante `7000001` corresponde a Valentina Rojas.
+El ejemplo tiene seis carreras, cuatro turnos, materias y módulos de 2026. Selecciona **Gestión 2026 → Módulo 4** para probar Programación I. El docente ve las materias por carrera y registra **Saber 40 + Hacer 40 + Ser 20**. Ejemplos: 20+30+10=60 (reprobado), 20+30+11=61 (aprobado), 40+40+20=100. Guarda todas las notas finales para descargar la planilla PDF o Excel. El estudiante `7000001` corresponde a Valentina Rojas.
 
 Si el módulo ya venció, el administrador puede autorizar una reapertura desde Materias y asignaciones. El cierre restringe la edición, pero permite consultar y descargar planillas completas.
 
@@ -104,7 +104,7 @@ Ejecuta `npm install`, `npm run db:migrate`, `npm run crear-admin` y `npm run de
 
 Actualiza los archivos del proyecto conservando `.env`, SQLite y el volumen PostgreSQL. Ejecuta `npm install`, `npm run db:migrate` y `npm run dev`. Los botones Importar Excel ya no se muestran en Docentes ni en Materias y asignaciones. Para revisar el archivo desde la terminal ejecuta `npm run catalogo:importar -- "PLANILLA DE NOTAS 2026.xlsx"`; para guardarlo, repite el comando añadiendo `--aplicar`.
 
-El catálogo de IBM incluye 163 materias por carrera y año. Para aplicar las materias corregidas sin importar el Excel desde el panel, ejecuta `npm run catalogo:actualizar` después de actualizar el proyecto. Usa **Editar** en el catálogo para corregir nombres, códigos o desactivar registros. Cambiar de carrera/año una materia que ya se dictó está restringido para conservar el historial.
+El catálogo de IBM incluye 141 materias por carrera y año. Para aplicar las materias corregidas sin importar el Excel desde el panel, ejecuta `npm run catalogo:actualizar` después de actualizar el proyecto. Usa **Editar** en el catálogo para corregir nombres, códigos o desactivar registros. Cambiar de carrera/año una materia que ya se dictó está restringido para conservar el historial.
 
 Si importas el Excel completo por terminal, sus 23 docentes sin CI aparecerán en **Docentes → Docentes pendientes de CI**. Completa cada carnet con **Completar CI y habilitar** para crear su acceso. No se importan los estudiantes ni las notas de ejemplo de otras hojas.
 
@@ -240,7 +240,7 @@ npm run catalogo:actualizar
 npm run dev
 ```
 
-El comando usa los datos de materias incluidos en `catalogs/ceicom-2026.json`; no necesitas copiar el Excel a la carpeta del proyecto. Asegúrate de conservar también la carpeta `scripts` y el archivo `subject-catalog-update.js` de esta versión. Se aplican 163 materias oficiales; las complementarias existentes y sus notas permanecen. Las correcciones conservan los IDs de las materias, por lo que las asignaciones y planillas muestran los nombres corregidos. Una segunda ejecución no duplica registros.
+El comando usa los datos de materias incluidos en `catalogs/ceicom-2026.json`; no necesitas copiar el Excel a la carpeta del proyecto. Asegúrate de conservar también la carpeta `scripts` y el archivo `subject-catalog-update.js` de esta versión. Se aplican 141 materias oficiales; las complementarias existentes y sus notas permanecen. Las correcciones conservan los IDs de las materias, por lo que las asignaciones y planillas muestran los nombres corregidos. Una segunda ejecución no duplica registros.
 
 Finalmente presiona Ctrl + F5. En **Materias y asignaciones** verás **Crear materia** y **Nueva asignación**, además del catálogo editable, sin el botón Importar Excel. Para comprobar las incorporaciones filtra el catálogo por Electrónica o Audiovisuales: cada carrera cuenta con 36 materias, 12 en cada año.
 
@@ -268,7 +268,7 @@ Para esta actualización, reemplaza el proyecto conservando `.env`, `backups` y 
 ## Registrar ORATORIA en varias carreras a la vez
 
 1. Abre **Materias y asignaciones → Crear materia** y escribe **ORATORIA**. Puedes dejar el código vacío.
-2. Selecciona **3º año**, pulsa **Seleccionar todas** y desmarca **Diseño Gráfico**, **Electrónica** y **Diseño y Producción de Audiovisuales - Guionización**. Comprueba el contador de carreras seleccionadas.
+2. Selecciona **3º año**, marca las carreras que correspondan. Comprueba el contador de carreras seleccionadas.
 3. Pulsa **Crear en carreras seleccionadas**. Revisa el catálogo: la materia aparece solo en las carreras elegidas y en 3º año. Guardar otra vez los mismos datos conserva las coincidencias sin duplicarlas. Si un nombre/código ya existe con otros datos, corrígelo desde Editar; el lote no se guarda parcialmente.
 4. Para incorporar estudiantes de ingreso 2024, usa **Estudiantes → Registrar grupo**, elige carrera, 3º año, ingreso 2024, gestión cursada, trimestre, turno, docente y ORATORIA, y marca los estudiantes correspondientes. Crear la materia no los inscribe automáticamente.
 

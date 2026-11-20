@@ -1,6 +1,6 @@
 # Configurar PostgreSQL para IBM Notas
 
-Estas instrucciones preparan una instalación local nueva del Instituto Técnico Británico Mercantil. El ZIP incluye el catálogo de siete carreras y 163 materias. La base se crea en tu computadora.
+Estas instrucciones preparan una instalación local nueva del Instituto Técnico Británico Mercantil. El ZIP incluye el catálogo de seis carreras y 141 materias. La base se crea en tu computadora.
 
 ## 1. Instalar los requisitos
 
@@ -24,7 +24,7 @@ npm start
 
 - `npm run configurar` crea `.env` con una contraseña aleatoria para PostgreSQL. Guarda ese archivo de forma privada. El configurador conserva cualquier `.env` existente.
 - Docker inicia PostgreSQL 17 en el puerto local 5432. El nombre técnico de la base y el usuario de PostgreSQL son `ceicom`.
-- Las migraciones crean las tablas. El comando del catálogo carga las 163 materias de IBM.
+- Las migraciones crean las tablas. El comando del catálogo carga las 141 materias de IBM.
 - `npm run crear-admin` pide usuario, nombre completo y una contraseña inicial de 8 a 160 caracteres que sea distinta del usuario. Esa cuenta pertenece al portal. El primer acceso pide cambiar la contraseña.
 - Con `npm start` activo, abre `http://localhost:3000` e inicia sesión con la cuenta que creaste.
 

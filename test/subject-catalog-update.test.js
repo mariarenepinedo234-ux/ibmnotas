@@ -6,8 +6,8 @@ import {reviewedSubjectCatalog,updateReviewedSubjectCatalog} from '../subject-ca
 import {reportData} from '../reports.js';
 
 test('catálogo corregido actualiza 21 nombres y conserva todos los vínculos y notas',async t=>{
-  const db=await testDatabase();t.after(()=>db.cleanup());const current=await reviewedSubjectCatalog();assert.equal(current.subjects.length,163);assert.deepEqual(current.teachers,[]);
-  const legacy=current.subjects.map(s=>({...s,name:s.previous_names?.[0]||s.name,previous_names:[]}));assert.equal(current.careers.length,7);
+  const db=await testDatabase();t.after(()=>db.cleanup());const current=await reviewedSubjectCatalog();assert.equal(current.subjects.length,141);assert.deepEqual(current.teachers,[]);
+  const legacy=current.subjects.map(s=>({...s,name:s.previous_names?.[0]||s.name,previous_names:[]}));assert.equal(current.careers.length,6);
   await applyCatalog(db,{careers:current.careers,subjects:legacy,teachers:[]});
   const corrected=await db.prepare("SELECT s.* FROM subjects s JOIN careers c ON c.id=s.career_id WHERE s.code='MCA-102' AND c.name LIKE 'COMERCIO%'").get();
   const student=(await db.prepare("INSERT INTO users(ci,name,role,password) VALUES (NULL,'ESTUDIANTE DE PRUEBA','student',NULL)").run()).lastInsertRowid;
@@ -33,5 +33,5 @@ test('catálogo corregido actualiza 21 nombres y conserva todos los vínculos y 
 test('una materia sin código con la escritura anterior se corrige conservando su identidad',async t=>{
   const db=await testDatabase({demo:false});t.after(()=>db.cleanup());await db.prepare('INSERT INTO careers(name) VALUES (?)').run('COMERCIO INTERNACIONAL');
   const career=await db.prepare('SELECT id FROM careers').get();const existing=(await db.query("INSERT INTO subjects(name,career_id,level) VALUES ('METROLOGÍAY CLASIFICACIÓN ARANCELARIA',$1,1) RETURNING id",[career.id])).rows[0].id;
-  await updateReviewedSubjectCatalog(db);const subject=await db.prepare('SELECT * FROM subjects WHERE id=?').get(existing);assert.equal(subject.name,'METROLOGÍA Y CLASIFICACIÓN ARANCELARIA');assert.equal(subject.code,'MCA-102');assert.equal(subject.career_id,career.id);assert.equal((await db.prepare('SELECT COUNT(*) n FROM subjects').get()).n,163);
+  await updateReviewedSubjectCatalog(db);const subject=await db.prepare('SELECT * FROM subjects WHERE id=?').get(existing);assert.equal(subject.name,'METROLOGÍA Y CLASIFICACIÓN ARANCELARIA');assert.equal(subject.code,'MCA-102');assert.equal(subject.career_id,career.id);assert.equal((await db.prepare('SELECT COUNT(*) n FROM subjects').get()).n,141);
 });
