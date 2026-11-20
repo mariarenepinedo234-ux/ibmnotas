@@ -66,3 +66,8 @@ html[data-theme=dark] :is(.app-layout,dialog) .btn.delete-offering-button{color:
 @media(max-width:760px){#roster-admission-filter{font-size:16px}.roster-scope{padding:12px}}
 .roster-locked-field[hidden],.offering-roster-form .roster-module-context[hidden]{display:none}
 .offering-roster-form .form-grid{grid-template-columns:1fr}
+
+.career-setting{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 12px;padding:5px 0}
+.settings-grid .career-setting p{margin:0;color:var(--ink)}
+.career-setting-actions{display:flex;gap:6px}
+.settings-grid .career-setting-actions .btn{margin-top:0}

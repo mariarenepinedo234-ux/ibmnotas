@@ -1,3 +1,4 @@
+import {keyOf} from './catalog.js';
 import {saveCalendarModule,moduleAcceptsAdmission,moduleAdmissionRule} from './module-calendars.js';
 import {enrollmentMatches,allowsRetakes} from './public/enrollment-rules.js';
 import {createHash} from 'node:crypto';
@@ -190,5 +191,55 @@ export async function deleteModule(db,input,actor){
     await db.query('DELETE FROM academic_group_students WHERE group_id=ANY($1::int[])',[state.groups.map(g=>g.id)]);await db.query('DELETE FROM academic_groups WHERE id=ANY($1::int[])',[state.groups.map(g=>g.id)]);
     await db.query('DELETE FROM enrollments WHERE offering_id=ANY($1::int[])',[state.offerings.map(o=>o.id)]);await db.prepare('DELETE FROM offerings WHERE module_id=?').run(moduleId);await db.prepare('DELETE FROM modules WHERE id=?').run(moduleId);
     await audit(db,actor,'Trimestre eliminado',`Trimestre ${moduleId}: ${state.record.name}; ${state.public.offerings} asignaciones, ${state.public.enrollments} inscripciones y ${state.public.notes} registros con notas eliminados. Personas y catálogo conservados.`);return {ok:true};
+  });
+}
+
+export async function editCareer(db,input,actor){
+  const careerId=id(input.career_id,'la carrera'),name=title(input.name);
+  return db.transaction(async()=>{
+    await db.query('SELECT pg_advisory_xact_lock(731202604)');
+    const career=await db.prepare('SELECT * FROM careers WHERE id=? FOR UPDATE').get(careerId);
+    if(!career)fail('Carrera no encontrada.',404);
+    const otherCareers=await db.prepare('SELECT name FROM careers WHERE id<>?').all(careerId);
+    if(otherCareers.some(other=>keyOf(other.name)===keyOf(name)))fail('Ya existe una carrera con ese nombre.',409);
+    if(career.name!==name){
+      await db.prepare('UPDATE careers SET name=? WHERE id=?').run(name,careerId);
+      await audit(db,actor,'Carrera renombrada',`Carrera ${careerId}: ${career.name} → ${name}.`);
+    }
+    return {ok:true};
+  });
+}
+
+export async function deleteCareer(db,input,actor){
+  const careerId=id(input.career_id,'la carrera');
+  if(input.confirm!=='ELIMINAR CARRERA')fail('Escribe ELIMINAR CARRERA para confirmar.');
+  return db.transaction(async()=>{
+    await structuralLock(db);
+    await db.query('SELECT pg_advisory_xact_lock(731202604)');
+    const career=await db.prepare('SELECT * FROM careers WHERE id=? FOR UPDATE').get(careerId);
+    if(!career)fail('Carrera no encontrada.',404);
+    if(await db.prepare('SELECT 1 FROM students WHERE career_id=? LIMIT 1').get(careerId)){
+      fail('La carrera tiene estudiantes registrados y no se puede eliminar.',409);
+    }
+
+    // FOR UPDATE bloquea nuevas referencias por clave foránea durante la comprobación.
+    const subjects=await db.prepare('SELECT id FROM subjects WHERE career_id=? ORDER BY id FOR UPDATE').all(careerId);
+    const subjectIds=subjects.map(subject=>subject.id);
+    const offerings=(await db.query('SELECT id FROM offerings WHERE subject_id=ANY($1::int[]) ORDER BY id FOR UPDATE',[subjectIds])).rows;
+    const offeringIds=offerings.map(offering=>offering.id);
+    const groups=(await db.query('SELECT id FROM academic_groups WHERE subject_id=ANY($1::int[]) OR offering_id=ANY($2::int[]) ORDER BY id FOR UPDATE',[subjectIds,offeringIds])).rows;
+    const groupIds=groups.map(group=>group.id);
+    const enrolled=await db.prepare('SELECT 1 FROM enrollments WHERE offering_id=ANY(?::int[]) LIMIT 1').get(offeringIds);
+    const groupMember=await db.prepare('SELECT 1 FROM academic_group_students WHERE group_id=ANY(?::int[]) LIMIT 1').get(groupIds);
+    if(enrolled||groupMember)fail('Hay estudiantes inscritos en las materias o grupos de esta carrera. No se puede eliminar.',409);
+
+    await db.prepare('DELETE FROM academic_groups WHERE id=ANY(?::int[])').run(groupIds);
+    await db.prepare('DELETE FROM offerings WHERE id=ANY(?::int[])').run(offeringIds);
+    await db.prepare('DELETE FROM subject_series WHERE subject_id=ANY(?::int[])').run(subjectIds);
+    await db.prepare('DELETE FROM subjects WHERE id=ANY(?::int[])').run(subjectIds);
+    const plans=await db.prepare('DELETE FROM study_plans WHERE career_id=?').run(careerId);
+    await db.prepare('DELETE FROM careers WHERE id=?').run(careerId);
+    await audit(db,actor,'Carrera eliminada',`Carrera ${careerId}: ${career.name} · ${subjects.length} materias · ${offerings.length} asignaciones · ${groups.length} grupos · ${plans.changes} planes de estudio.`);
+    return {ok:true};
   });
 }

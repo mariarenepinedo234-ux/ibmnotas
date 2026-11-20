@@ -140,3 +140,40 @@ test('solo administración puede administrar estudiantes, docentes, grupos y tri
     for(const [path,body] of [['rosters',payload],['student-edit',{}],['student-password-reset',{}],['teacher-password-reset',{}],['student-delete',{}],['module-edit',{}],['module-delete',{}],['offering-roster',{}]])assert.equal((await api(path,body,role)).status,expected);
   }
 });
+
+test('administración renombra carreras conservando sus vínculos y elimina solo carreras sin estudiantes',async t=>{
+  const {db,api,student,offering}=await setup(t);
+  const originalEnrollments=await db.prepare('SELECT * FROM enrollments ORDER BY id').all();
+  const rename={career_id:student.career_id,name:'Sistemas Informáticos Actualizado'};
+  assert.equal((await api('career-edit',rename,'teacher')).status,403);
+  assert.equal((await api('career-edit',{...rename,name:'Contaduria General'})).status,409);
+  assert.equal((await api('career-edit',rename)).status,200);
+  const data=(await api('data')).body;
+  assert.equal(data.students.find(row=>row.user_id===student.user_id).career,'SISTEMAS INFORMÁTICOS ACTUALIZADO');
+  assert.equal(data.offerings.find(row=>row.id===offering.id).career,'SISTEMAS INFORMÁTICOS ACTUALIZADO');
+
+  const remove=career_id=>({career_id,confirm:'ELIMINAR CARRERA'});
+  assert.equal((await api('career-delete',remove(student.career_id))).status,409);
+
+  const career=(await db.query("INSERT INTO careers(name) VALUES ('DISEÑO GRÁFICO') RETURNING id")).rows[0];
+  const subject=(await db.query("INSERT INTO subjects(name,career_id,level) VALUES ('TIPOGRAFÍA',$1,1) RETURNING id",[career.id])).rows[0];
+  const series=(await db.query('INSERT INTO subject_series(subject_id,shift_id,part_count) VALUES ($1,1,2) RETURNING id',[subject.id])).rows[0];
+  const assignment=(await db.query('INSERT INTO offerings(subject_id,module_id,shift_id,teacher_id,series_id,part_number) VALUES ($1,4,1,2,$2,1) RETURNING id',[subject.id,series.id])).rows[0];
+  const group=(await db.query('INSERT INTO academic_groups(subject_id,year_id,admission_year_id,shift_id) VALUES ($1,3,3,1) RETURNING id',[subject.id])).rows[0];
+  const plan=(await db.query("INSERT INTO study_plans(title,career_id,level,original_name,content,size_bytes,uploaded_by) VALUES ('Plan',$1,1,'plan.pdf',$2,16,1) RETURNING id",[career.id,Buffer.alloc(16)])).rows[0];
+
+  assert.equal((await api('career-delete',remove(career.id),'student')).status,403);
+  assert.equal((await api('career-delete',{career_id:career.id})).status,400);
+  await db.prepare('INSERT INTO enrollments(student_id,offering_id) VALUES (?,?)').run(student.user_id,assignment.id);
+  assert.equal((await api('career-delete',remove(career.id))).status,409);
+  await db.prepare('DELETE FROM enrollments WHERE offering_id=?').run(assignment.id);
+  await db.prepare('INSERT INTO academic_group_students(group_id,student_id) VALUES (?,?)').run(group.id,student.user_id);
+  assert.equal((await api('career-delete',remove(career.id))).status,409);
+  await db.prepare('DELETE FROM academic_group_students WHERE group_id=?').run(group.id);
+
+  assert.equal((await api('career-delete',remove(career.id))).status,200);
+  for(const [table,row] of [['careers',career],['subjects',subject],['offerings',assignment],['subject_series',series],['academic_groups',group],['study_plans',plan]]){
+    assert.equal(await db.prepare(`SELECT id FROM ${table} WHERE id=?`).get(row.id),undefined,table);
+  }
+  assert.deepEqual(await db.prepare('SELECT * FROM enrollments ORDER BY id').all(),originalEnrollments);
+});

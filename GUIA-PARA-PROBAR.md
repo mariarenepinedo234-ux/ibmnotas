@@ -395,3 +395,9 @@ Actualiza el proyecto conservando `.env`, `backups` y archivos privados. Ejecuta
 Las asignaciones vinculadas a partes I, II, III, etc. se conservan para proteger el historial y los promedios; la pantalla explica esa protección. El botón elimina una asignación de un módulo, no el registro de la materia del catálogo. Para corregir solamente su nombre, usa la edición del catálogo.
 
 Actualiza conservando `.env`, `backups` y archivos privados, ejecuta `npm install`, reinicia con `npm run dev` y pulsa Ctrl + F5. No requiere nuevas migraciones si ya aplicaste la 009.
+
+## Editar o eliminar una carrera
+
+Entra como administrador y abre **Gestiones y módulos → Configuración institucional → Carreras**. Usa **Editar** para corregir el nombre de una carrera en todos los registros vinculados. El sistema conserva su identidad académica y rechaza un nombre que ya usa otra carrera.
+
+Usa **Eliminar** y escribe **ELIMINAR CARRERA** para confirmar. El sistema impide el borrado si hay estudiantes registrados en la carrera, inscritos en sus materias o incluidos en grupos pendientes. Si la carrera está libre, se eliminan también sus materias, asignaciones, grupos y planes de estudio.
